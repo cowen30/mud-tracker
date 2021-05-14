@@ -1,0 +1,70 @@
+<div class="row">
+    <div class="col-12">
+        <%= form_with model: @event do |form| %>
+            <div class="row pt-4">
+                <div class="col-12 col-sm-10 col-lg-8 col-xl-6 mx-auto">
+                    <div class="row gx-2">
+                        <div class="col-6">
+                            <%= form.submit 'Save', :disabled => @event.archived, :class => 'btn btn-primary btn-lg w-100' %>
+                        </div>
+                        <% if !@event.archived %>
+                        <div class="col-6">
+                            <button type="button" class="btn btn-danger btn-lg w-100" data-bs-toggle="modal" data-bs-target="#deleteEventModal">Remove Event</button>
+                        </div>
+                        <% end %>
+                    </div>
+                </div>
+            </div>
+            <fieldset <% if @event.archived %>disabled<% end %>>
+                <div class="row pt-4 gx-2 gy-3">
+                    <div class="col-12 col-sm-7 col-md-5">
+                        <%= form.label :name, 'Event Name' %>
+                        <%= form.text_field :name %>
+                    </div>
+                    <div class="col-6 col-md-4">
+                        <%= form.label :city, 'City' %>
+                        <%= form.text_field :city %>
+                    </div>
+                    <div class="col-3 col-md-1">
+                        <%= form.label :state, 'State' %>
+                        <%= form.select :state, Rails.configuration.state_list, { prompt: 'Select...' } %>
+                    </div>
+                    <div class="col-3 col-md-2">
+                        <%= form.label :country, 'Country' %>
+                        <%= form.select :country, Rails.configuration.country_list, { prompt: 'Select...' } %>
+                    </div>
+                    <div class="col-6 col-sm-4 col-md-3">
+                        <%= form.label :date, 'Date' %>
+                        <%= form.date_field :date %>
+                    </div>
+                    <div class="col-6 col-sm-3 col-md-2">
+                        <%= form.label :url, 'URL Extension' %>
+                        <%= form.text_field :url %>
+                    </div>
+                </div>
+            </fieldset>
+        <% end %>
+    </div>
+    <div class="col-12">
+        <small>Last updated: <%= "#{@event.user.first_name} #{@event.user.last_name}" %>, <%= @event.updated_at.strftime('%D %r') %></small>
+    </div>
+</div>
+
+<!-- Delete Modal -->
+<div class="modal fade" id="deleteEventModal" tabindex="-1" role="dialog" aria-labelledby="deleteEventModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="deleteEventModalLabel">Delete <%= @event.name %></h5>
+                <%= dismiss_modal_tag %>
+            </div>
+            <div class="modal-body">
+                <p>Are you sure you want to delete this event?</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <%= link_to 'Delete', event_path(@event), method: :delete, class: 'btn btn-danger' %>
+            </div>
+        </div>
+    </div>
+</div>

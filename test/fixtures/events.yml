@@ -1,0 +1,19 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  name: MyString
+  location: MyString
+  date: 2021-05-08
+  url: MyString
+  latitude: MyString
+  longitude: MyString
+  archived: false
+
+two:
+  name: MyString
+  location: MyString
+  date: 2021-05-08
+  url: MyString
+  latitude: MyString
+  longitude: MyString
+  archived: false
