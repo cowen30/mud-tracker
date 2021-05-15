@@ -1,5 +1,7 @@
 class EventsController < ApplicationController
 
+  skip_before_action :authorized, only: [:index, :show]
+
   def index
     @events = Event.where(archived: false).order(date: :desc)
   end

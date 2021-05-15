@@ -1,0 +1,41 @@
+<div class="row justify-content-center align-items-center">        
+    <div class="col-12 col-md-6 col-lg-4">
+        <%= form_with model: User.new do |form| %>
+            <div class="row pt-2 gy-3">
+                <div class="col-6">
+                    <div class="form-floating required">
+                        <%= form.text_field :first_name %>
+                        <%= form.label :first_name, 'First Name' %>
+                    </div>
+                </div>
+                <div class="col-6">
+                    <div class="form-floating required">
+                        <%= form.text_field :last_name %>
+                        <%= form.label :last_name, 'Last Name' %>
+                    </div>
+                </div>
+                <div class="col-12">
+                    <div class="form-floating required">
+                        <%= form.text_field :username %>
+                        <%= form.label :username, 'Username' %>
+                    </div>
+                </div>
+                <div class="col-12">
+                    <div class="form-floating required">
+                        <%= form.password_field :password, class: 'form-control' %>
+                        <%= form.label :password, 'Password' %>
+                    </div>
+                </div>
+                <div class="col-12">
+                    <div class="form-floating required">
+                        <%= form.password_field :password_confirmation, class: 'form-control' %>
+                        <%= form.label :password_confirmation, 'Confirm Password' %>
+                    </div>
+                </div>
+                <div class="col-12">
+                    <%= form.submit 'Create Account', class: 'btn btn-primary btn-lg w-100' %>
+                </div>
+            </div>
+        <% end %>
+    </div>
+</div>

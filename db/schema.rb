@@ -42,7 +42,7 @@ ActiveRecord::Schema.define(version: 2021_05_09_021056) do
     t.string "first_name"
     t.string "last_name"
     t.string "username"
-    t.string "pw_hash"
+    t.string "password_digest"
     t.boolean "active", default: true, null: false
     t.integer "updated_by"
     t.datetime "created_at", precision: 6, null: false

@@ -38,6 +38,20 @@
                 <li id="events" class="nav-item">
                   <%= link_to 'Events', events_path, class: 'nav-link' %>
                 </li>
+                <% if logged_in? %>
+                  <li class="nav-item dropdown border-start">
+                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false"><%= "#{current_user.first_name} #{current_user.last_name}" %></a>
+                    <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                      <li><a class="dropdown-item" href="/profile">Profile</a></li>
+                      <li><hr class="dropdown-divider"></li>
+                      <li><a class="dropdown-item" href="/logout">Logout</a></li>
+                    </ul>
+                  </li>
+                <% else %>
+                  <li id="login" class="nav-item border-start">
+                    <a class="nav-link" href="/login">Login</a>
+                  </li>
+                <% end %>
               </ul>
             </div>
           </nav>
