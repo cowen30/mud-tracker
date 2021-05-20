@@ -4,6 +4,8 @@ Rails.application.routes.draw do
   resources :events
   resources :users
 
+  get 'verify-email', to: 'users#verify'
+
   get 'login', to: 'sessions#new'
   post 'login', to: 'sessions#create'
   get 'welcome', to: 'users#new'

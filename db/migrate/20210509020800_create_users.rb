@@ -4,9 +4,11 @@ class CreateUsers < ActiveRecord::Migration[6.1]
     create_table :users do |t|
       t.string :first_name
       t.string :last_name
+      t.string :email
       t.string :username
       t.string :password_digest
-      t.boolean :active, default: true, null: false
+      t.boolean :active, default: false, null: false
+      t.string :verification_code
 
       t.integer :updated_by
       t.timestamps
