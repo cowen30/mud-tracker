@@ -1,0 +1,2 @@
+class EventDetail < ApplicationRecord
+end

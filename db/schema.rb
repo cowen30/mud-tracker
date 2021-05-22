@@ -10,13 +10,33 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_05_09_021056) do
+ActiveRecord::Schema.define(version: 2021_05_22_103200) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
   create_table "brands", force: :cascade do |t|
     t.string "name"
+    t.integer "updated_by"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+  end
+
+  create_table "event_details", force: :cascade do |t|
+    t.integer "event_id"
+    t.integer "event_type_id"
+    t.decimal "lap_distance"
+    t.decimal "lap_elevation"
+    t.string "badge_id"
+    t.integer "updated_by"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+  end
+
+  create_table "event_types", force: :cascade do |t|
+    t.string "name"
+    t.integer "brand_id"
+    t.integer "display_order"
     t.integer "updated_by"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
@@ -52,6 +72,11 @@ ActiveRecord::Schema.define(version: 2021_05_09_021056) do
   end
 
   add_foreign_key "brands", "users", column: "updated_by"
+  add_foreign_key "event_details", "event_types"
+  add_foreign_key "event_details", "events"
+  add_foreign_key "event_details", "users", column: "updated_by"
+  add_foreign_key "event_types", "brands"
+  add_foreign_key "event_types", "users", column: "updated_by"
   add_foreign_key "events", "brands"
   add_foreign_key "events", "users", column: "updated_by"
   add_foreign_key "users", "users", column: "updated_by"
