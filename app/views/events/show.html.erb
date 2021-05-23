@@ -4,3 +4,38 @@
         <p><%= link_to "Edit", edit_event_path(@event) %></p>
     </div>
 </div>
+<div class="row pt-3">
+    <div class="col-12">
+        <div class="row">
+            <div class="col-2 col-md-3">
+                <div class="nav flex-column nav-pills text-center" id="v-pills-tab" role="tablist" aria-orientation="vertical">
+                    <button class="nav-link text-md-start <%= (@active_tab.nil? || @active_tab == 'details') ? 'active' : nil %>" id="v-pills-details-tab" data-bs-toggle="pill" data-bs-target="#v-pills-details" type="button" role="tab" aria-controls="v-pills-details" aria-selected="<%= (@active_tab.nil? || @active_tab == 'details') ? 'true' : 'false' %>">
+                        <i class="bi bi-calendar3 d-md-none"></i>
+                        <span class="d-none d-md-block">Details</span>
+                    </button>
+                    <button class="nav-link text-md-start <%= @active_tab == 'event-types' ? 'active' : nil %>" id="v-pills-event-types-tab" data-bs-toggle="pill" data-bs-target="#v-pills-event-types" type="button" role="tab" aria-controls="v-pills-event-types" aria-selected="<%= @active_tab == 'event-types' ? 'true' : 'false' %>">
+                        <i class="bi bi-calendar3 d-md-none"></i>
+                        <span class="d-none d-md-block">Event Types</span>
+                    </button>
+                    <button class="nav-link text-md-start <%= @active_tab == 'participants' ? 'active' : nil %>" id="v-pills-participants-tab" data-bs-toggle="pill" data-bs-target="#v-pills-participants" type="button" role="tab" aria-controls="v-pills-participants" aria-selected="<%= @active_tab == 'participants' ? 'true' : 'false' %>">
+                        <i class="bi bi-calendar3 d-md-none"></i>
+                        <span class="d-none d-md-block">Participants</span>
+                    </button>
+                </div>
+            </div>
+            <div class="col-10 col-md-9">
+                <div class="tab-content" id="v-pills-tabContent">
+                    <div class="tab-pane fade <%= (@active_tab == nil || @active_tab == 'details') ? 'show active' : nil %>" id="v-pills-details" role="tabpanel" aria-labelledby="v-pills-details-tab">
+                        <%= render 'events/partials/details', locals: { event: @event } %>
+                    </div>
+                    <div class="tab-pane fade <%= @active_tab == 'event-types' ? 'show active' : nil %>" id="v-pills-event-types" role="tabpanel" aria-labelledby="v-pills-event-types-tab">
+                        <%= render 'events/partials/event_details', locals: { event_details: @event_details } %>
+                    </div>
+                    <div class="tab-pane fade <%= @active_tab == 'participants' ? 'show active' : nil %>" id="v-pills-participants" role="tabpanel" aria-labelledby="v-pills-participants-tab">
+                        <%= render 'events/partials/participants', locals: { event: @event, participants: @participants } %>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

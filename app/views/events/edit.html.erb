@@ -46,7 +46,7 @@
         <% end %>
     </div>
     <div class="col-12">
-        <small>Last updated: <%= "#{@event.user.first_name} #{@event.user.last_name}" %>, <%= @event.updated_at.strftime('%D %r') %></small>
+        <small>Last updated: <%= "#{@event.updated_by.first_name} #{@event.updated_by.last_name}" %>, <%= @event.updated_at.strftime('%D %r') %></small>
     </div>
 </div>
 

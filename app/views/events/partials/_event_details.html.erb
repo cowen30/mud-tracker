@@ -1,0 +1,22 @@
+<div class="row">
+  <% @event_details.each do |ed| %>
+    <div class="col-12">
+        <div class="row">
+            <div class="col-4">
+                <h5><%= ed.event_type.name %></h5>
+            </div>
+            <div class="col-4">
+                <dl class="row">
+                    <dt class="col-9 text-end">Lap Distance</dt>
+                    <dd class="col-3"><%= ed.lap_distance %></dd>
+
+                    <dt class="col-9 text-end">Lap Elevation</dt>
+                    <dd class="col-3"><%= ed.lap_elevation %></dd>
+                </dl>
+            </div>
+            <div class="col-4">
+            </div>
+        </div>
+    </div>
+  <% end %>
+</div>

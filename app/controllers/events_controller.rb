@@ -8,7 +8,8 @@ class EventsController < ApplicationController
 
   def create
     @event = Event.new(event_params)
-    @event.updated_by = current_user.id
+    @event.created_by = current_user
+    @event.updated_by = current_user
     if @event.save
       redirect_to @event
     else
@@ -18,6 +19,8 @@ class EventsController < ApplicationController
 
   def show
     @event = Event.find(params[:id])
+    @event_details = EventDetail.where(event_id: params[:id])
+    @participants = Participant.includes(:event_detail).where(event_detail: { event_id: params[:id] })
   end
 
   def edit
@@ -26,8 +29,8 @@ class EventsController < ApplicationController
 
   def update
     @event = Event.find(params[:id])
-    @event.updated_by = current_user.id
-    if @event.update(event_params)
+    @event.updated_by = current_user
+    if @event.save
       redirect_to @event
     else
       redirect_to @event
@@ -37,7 +40,7 @@ class EventsController < ApplicationController
   def destroy
     @event = Event.find(params[:id])
     @event.archived = true
-    @event.updated_by = current_user.id
+    @event.updated_by = current_user
     if @event.save
       redirect_to events_path
     else
