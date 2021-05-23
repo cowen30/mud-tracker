@@ -45,6 +45,7 @@ ActiveRecord::Schema.define(version: 2021_05_22_103200) do
   create_table "events", force: :cascade do |t|
     t.string "name"
     t.integer "brand_id"
+    t.string "address"
     t.string "city"
     t.string "state"
     t.string "country"

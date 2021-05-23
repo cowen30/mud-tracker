@@ -4,6 +4,7 @@ class CreateEvents < ActiveRecord::Migration[6.1]
     create_table :events do |t|
       t.string :name
       t.integer :brand_id
+      t.string :address
       t.string :city
       t.string :state
       t.string :country
