@@ -13,7 +13,7 @@ class EventsController < ApplicationController
     if @event.save
       redirect_to @event
     else
-      render :index
+      render :'common/error'
     end
   end
 
@@ -33,7 +33,7 @@ class EventsController < ApplicationController
     if @event.save
       redirect_to @event
     else
-      redirect_to @event
+      render :'common/error'
     end
   end
 
@@ -44,7 +44,7 @@ class EventsController < ApplicationController
     if @event.save
       redirect_to events_path
     else
-      redirect_to @event
+      render :'common/error'
     end
   end
 
