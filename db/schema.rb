@@ -53,6 +53,13 @@ ActiveRecord::Schema.define(version: 2021_05_22_103200) do
     t.string "latitude"
     t.string "longitude"
     t.boolean "archived", default: false, null: false
+  end
+
+  create_table "participants", force: :cascade do |t|
+    t.integer "user_id"
+    t.integer "event_detail_id"
+    t.string "participation_day"
+    t.integer "contender_status_id"
     t.integer "updated_by"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
@@ -79,5 +86,8 @@ ActiveRecord::Schema.define(version: 2021_05_22_103200) do
   add_foreign_key "event_types", "users", column: "updated_by"
   add_foreign_key "events", "brands"
   add_foreign_key "events", "users", column: "updated_by"
+  add_foreign_key "participants", "event_details"
+  add_foreign_key "participants", "users"
+  add_foreign_key "participants", "users", column: "updated_by"
   add_foreign_key "users", "users", column: "updated_by"
 end

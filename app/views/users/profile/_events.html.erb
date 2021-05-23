@@ -1,0 +1,22 @@
+<div class="row pt-3">
+    <div class="col-12 col-xl-10 mx-auto table-responsive pt-2">
+        <table class="table table-striped table-hover data-table">
+            <thead>
+                <tr>
+                    <th>Event Name</th>
+                    <th>Type</th>
+                    <th>Day</th>
+                </tr>
+            </thead>
+            <tbody>
+            <% @participants.each do |participant| %>
+                <tr class="table-row" data-bs-toggle="modal" data-bs-target="#participantModal" data-participant="<%= participant.id %>" data-event="<%= participant.user.id %>" data-type="<%= participant.event_detail.event_type_id %>" data-day="<%= participant.participation_day %>">
+                    <td><%= participant.event_detail.event.name %></td>
+                    <td><%= participant.event_detail.event_type.name %></td>
+                    <td><%= participant.participation_day %></td>
+                </tr>
+            <% end %>
+            </tbody>
+        </table>
+    </div>
+</div>

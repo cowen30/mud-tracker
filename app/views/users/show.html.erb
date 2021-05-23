@@ -1,0 +1,28 @@
+<div class="row pt-3">
+    <div class="col-12">
+        <div class="row">
+            <div class="col-2 col-md-3">
+                <div class="nav flex-column nav-pills text-center" id="v-pills-tab" role="tablist" aria-orientation="vertical">
+                    <button class="nav-link text-md-start <%= @active_tab == 'details' ? 'active' : nil %>" id="v-pills-details-tab" data-bs-toggle="pill" data-bs-target="#v-pills-details" type="button" role="tab" aria-controls="v-pills-details" aria-selected="<%= @active_tab == 'details' ? 'true' : 'false' %>">
+                        <i class="bi bi-calendar3 d-md-none"></i>
+                        <span class="d-none d-md-block">Details</span>
+                    </button>
+                    <button class="nav-link text-md-start <%= @active_tab == 'events' ? 'active' : nil %>" id="v-pills-events-tab" data-bs-toggle="pill" data-bs-target="#v-pills-events" type="button" role="tab" aria-controls="v-pills-events" aria-selected="<%= @active_tab == 'events' ? 'true' : 'false' %>">
+                        <i class="bi bi-calendar3 d-md-none"></i>
+                        <span class="d-none d-md-block">Events</span>
+                    </button>
+                </div>
+            </div>
+            <div class="col-10 col-md-9">
+                <div class="tab-content" id="v-pills-tabContent">
+                    <div class="tab-pane fade <%= @active_tab == 'details' ? 'show active' : nil %>" id="v-pills-details" role="tabpanel" aria-labelledby="v-pills-details-tab">
+                        <%= render 'users/profile/details', locals: { user: @user } %>
+                    </div>
+                    <div class="tab-pane fade <%= @active_tab == 'events' ? 'show active' : nil %>" id="v-pills-events" role="tabpanel" aria-labelledby="v-pills-events-tab">
+                        <%= render 'users/profile/events', locals: { user: @user, participants: @participants } %>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
