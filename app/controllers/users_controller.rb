@@ -11,7 +11,6 @@ class UsersController < ApplicationController
 
     def create
         @user = User.new(user_params)
-        @user.updated_by = 1
         @user.save
         helpers.send_welcome_email @user
         session[:user_id] = @user.id
@@ -24,6 +23,7 @@ class UsersController < ApplicationController
         if verification_code == @user.verification_code
             @user.verification_code = nil
             @user.active = true
+            @user.updated_by = @user.id
             @user.save
             redirect_to @user
         end
