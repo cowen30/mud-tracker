@@ -31,10 +31,10 @@ class UsersController < ApplicationController
 
     def show
         @user = User.find(params[:id])
-        @participants = Participant.includes(:event_detail).where(user_id: params[:id])
         if !@user.active
             redirect_to '/'
         else
+            @participants = Participant.includes(:event_detail).where(user_id: params[:id])
             @active_tab = 'details'
             if !params['tab'].nil?
                 @active_tab = params['tab']
