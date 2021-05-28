@@ -3,6 +3,7 @@ Rails.application.routes.draw do
 
   resources :events
   resources :users
+  resources :participants
 
   get 'verify-email', to: 'users#verify'
 

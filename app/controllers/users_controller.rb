@@ -34,7 +34,9 @@ class UsersController < ApplicationController
         if !@user.active
             redirect_to '/'
         else
-            @participants = Participant.includes(:event_detail).where(user_id: params[:id])
+            @participants = Participant.includes(event_detail: [ :event, :event_type ]).where(user_id: params[:id]).order(Arel.sql('events.date DESC'), Arel.sql('participants.participation_day DESC'), Arel.sql('event_types.display_order ASC'))
+            @new_participant = Participant.new
+            @new_participant.event_detail = EventDetail.new
             @active_tab = 'details'
             if !params['tab'].nil?
                 @active_tab = params['tab']
