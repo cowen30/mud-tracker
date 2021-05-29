@@ -58,27 +58,27 @@
                           <% end %>
                         </div>
                         <div class="col-12">
-                            <%= form.label :name, 'Event Name' %>
+                            <%= form.label :name, 'Event Name', { class: 'form-label' } %>
                             <%= form.text_field :name %>
                         </div>
                         <div class="col-12">
-                            <%= form.label :address, 'Address' %>
+                            <%= form.label :address, 'Address', { class: 'form-label' } %>
                             <%= form.text_field :address %>
                         </div>
                         <div class="col-6">
-                            <%= form.label :city, 'City' %>
+                            <%= form.label :city, 'City', { class: 'form-label' } %>
                             <%= form.text_field :city %>
                         </div>
                         <div class="col-3">
-                            <%= form.label :state, 'State' %>
+                            <%= form.label :state, 'State', { class: 'form-label' } %>
                             <%= form.select :state, Rails.configuration.state_list, { prompt: 'Select...' } %>
                         </div>
                         <div class="col-3">
-                            <%= form.label :country, 'Country' %>
+                            <%= form.label :country, 'Country', { class: 'form-label' } %>
                             <%= form.select :country, Rails.configuration.country_list, { prompt: 'Select...' } %>
                         </div>
                         <div class="col-6">
-                            <%= form.label :date, 'Date' %>
+                            <%= form.label :date, 'Date', { class: 'form-label' } %>
                             <%= form.date_field :date %>
                         </div>
                         <div class="col-6">
