@@ -24,7 +24,7 @@
             <tbody>
             <% @participants.each do |participant| %>
                 <tr class="table-row" data-bs-toggle="modal" data-bs-target="#participantModal" data-participant="<%= participant.id %>" data-name="<%= participant.user.id %>" data-race="<%= participant.event_detail.event_id %>" data-type="<%= participant.event_detail.event_type_id %>" data-day="<%= participant.participation_day %>">
-                    <td><%= "#{participant.user.first_name} #{participant.user.last_name}" %></td>
+                    <td><%= participant.user.full_name %></td>
                     <td><%= participant.event_detail.event_type.name %></td>
                     <td><%= participant.participation_day %></td>
                 </tr>
