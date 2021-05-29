@@ -59,27 +59,27 @@
                         </div>
                         <div class="col-12">
                             <%= form.label :name, 'Event Name', { class: 'form-label' } %>
-                            <%= form.text_field :name %>
+                            <%= form.text_field :name, { class: 'form-control' } %>
                         </div>
                         <div class="col-12">
                             <%= form.label :address, 'Address', { class: 'form-label' } %>
-                            <%= form.text_field :address %>
+                            <%= form.text_field :address, { class: 'form-control' } %>
                         </div>
                         <div class="col-6">
                             <%= form.label :city, 'City', { class: 'form-label' } %>
-                            <%= form.text_field :city %>
+                            <%= form.text_field :city, { class: 'form-control' } %>
                         </div>
                         <div class="col-3">
                             <%= form.label :state, 'State', { class: 'form-label' } %>
-                            <%= form.select :state, Rails.configuration.state_list, { prompt: 'Select...' } %>
+                            <%= form.select :state, Rails.configuration.state_list, { prompt: 'Select...' }, { class: 'form-select' } %>
                         </div>
                         <div class="col-3">
                             <%= form.label :country, 'Country', { class: 'form-label' } %>
-                            <%= form.select :country, Rails.configuration.country_list, { prompt: 'Select...' } %>
+                            <%= form.select :country, Rails.configuration.country_list, { prompt: 'Select...' }, { class: 'form-select' } %>
                         </div>
                         <div class="col-6">
                             <%= form.label :date, 'Date', { class: 'form-label' } %>
-                            <%= form.date_field :date %>
+                            <%= form.date_field :date, { class: 'form-control' } %>
                         </div>
                     </div>
                 </div>

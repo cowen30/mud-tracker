@@ -18,24 +18,24 @@
             <fieldset <% if @event.archived %>disabled<% end %>>
                 <div class="row pt-4 gx-2 gy-3">
                     <div class="col-12 col-sm-7 col-md-5">
-                        <%= form.label :name, 'Event Name' %>
-                        <%= form.text_field :name %>
+                        <%= form.label :name, 'Event Name', { class: 'form-label' } %>
+                        <%= form.text_field :name, { class: 'form-control' } %>
                     </div>
                     <div class="col-6 col-md-4">
-                        <%= form.label :city, 'City' %>
-                        <%= form.text_field :city %>
+                        <%= form.label :city, 'City', { class: 'form-label' } %>
+                        <%= form.text_field :city, { class: 'form-control' } %>
                     </div>
                     <div class="col-3 col-md-1">
-                        <%= form.label :state, 'State' %>
-                        <%= form.select :state, Rails.configuration.state_list, { prompt: 'Select...' } %>
+                        <%= form.label :state, 'State', { class: 'form-label' } %>
+                        <%= form.select :state, Rails.configuration.state_list, { prompt: 'Select...' }, { class: 'form-select' } %>
                     </div>
                     <div class="col-3 col-md-2">
-                        <%= form.label :country, 'Country' %>
-                        <%= form.select :country, Rails.configuration.country_list, { prompt: 'Select...' } %>
+                        <%= form.label :country, 'Country', { class: 'form-label' } %>
+                        <%= form.select :country, Rails.configuration.country_list, { prompt: 'Select...' }, { class: 'form-select' } %>
                     </div>
                     <div class="col-6 col-sm-4 col-md-3">
-                        <%= form.label :date, 'Date' %>
-                        <%= form.date_field :date %>
+                        <%= form.label :date, 'Date', { class: 'form-label' } %>
+                        <%= form.date_field :date, { class: 'form-control' } %>
                     </div>
                 </div>
             </fieldset>
