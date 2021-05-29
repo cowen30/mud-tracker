@@ -37,16 +37,12 @@
                         <%= form.label :date, 'Date' %>
                         <%= form.date_field :date %>
                     </div>
-                    <div class="col-6 col-sm-3 col-md-2">
-                        <%= form.label :url, 'URL Extension' %>
-                        <%= form.text_field :url %>
-                    </div>
                 </div>
             </fieldset>
         <% end %>
     </div>
     <div class="col-12">
-        <small>Last updated: <%= "#{@event.updated_by.first_name} #{@event.updated_by.last_name}" %>, <%= @event.updated_at.strftime('%D %r') %></small>
+        <small>Last updated: <%= @event.updated_by.full_name %>, <%= @event.updated_at.strftime('%D %r') %></small>
     </div>
 </div>
 

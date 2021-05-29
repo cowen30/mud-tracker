@@ -31,8 +31,7 @@ class EventsController < ApplicationController
 
   def update
     @event = Event.find(params[:id])
-    @event.updated_by = current_user
-    if @event.save
+    if @event.update(event_params.merge(updated_by: current_user))
       redirect_to @event
     else
       render :'common/error'
