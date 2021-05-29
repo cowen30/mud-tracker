@@ -19,6 +19,7 @@ class EventsController < ApplicationController
 
   def show
     @event = Event.find(params[:id])
+    @can_edit_event = helpers.can_edit_event(@event)
     @event_details = EventDetail.where(event_id: params[:id])
     @participants = Participant.includes(:event_detail).where(event_detail: { event_id: params[:id] })
     @new_participant = Participant.new

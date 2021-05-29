@@ -1,4 +1,4 @@
-<% if logged_in? && !@event.archived %>
+<% if @can_edit_event %>
 <div class="row pt-4">
     <div class="col-8 col-sm-6 col-md-5 col-lg-4 mx-auto">
         <%= button_tag 'Add Participant',
@@ -34,7 +34,6 @@
     </div>
 </div>
 
-<% if logged_in? && !@event.archived %>
 <!-- Participant Modal -->
 <div class="modal fade" id="participantModal" tabindex="-1" role="dialog" aria-labelledby="participantModalLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
@@ -45,38 +44,41 @@
                     <%= dismiss_modal_tag %>
                 </div>
                 <div class="modal-body">
-                    <div class="row gy-3">
-                        <div class="col-12">
-                            <%= form.label :user_id, 'Participant Name', { class: 'form-label' } %>
-                            <%= form.collection_select :user_id, User.where(active: true).order(last_name: :asc), :id, :full_name, { prompt: 'Select...' }, { class: 'form-select' } %>
-                        </div>
-                        <%= form.fields_for :event_detail, @new_participant.event_detail do |event_detail_form| %>
-                            <%= event_detail_form.text_field :event_id, value: @event.id, class: 'd-none' %>
+                    <fieldset <% if !@can_edit_event %>disabled<% end %>>
+                        <div class="row gy-3">
                             <div class="col-12">
-                                <%= event_detail_form.label :event_type_id, 'Event Type', { class: 'form-label' } %>
-                                <%= event_detail_form.collection_select :event_type_id, EventType.order(id: :asc, display_order: :asc), :id, :name, { prompt: 'Select...' }, { class: 'form-select' } %>
+                                <%= form.label :user_id, 'Participant Name', { class: 'form-label' } %>
+                                <%= form.collection_select :user_id, User.where(active: true).order(last_name: :asc), :id, :full_name, { prompt: 'Select...' }, { class: 'form-select' } %>
                             </div>
-                        <% end %>
-                        <div class="col-12">
-                            <p>Participation Day</p>
-                            <div class="form-check form-check-inline">
-                                <%= form.radio_button :participation_day, 'Saturday', { class: 'form-check-input' } %>
-                                <%= form.label :participation_day_saturday, 'Saturday', { class: 'form-check-label' } %>
-                            </div>
-                            <div class="form-check form-check-inline">
-                                <%= form.radio_button :participation_day, 'Sunday', { class: 'form-check-input' } %>
-                                <%= form.label :participation_day_sunday, 'Sunday', { class: 'form-check-label' } %>
+                            <%= form.fields_for :event_detail, @new_participant.event_detail do |event_detail_form| %>
+                                <%= event_detail_form.text_field :event_id, value: @event.id, class: 'd-none' %>
+                                <div class="col-12">
+                                    <%= event_detail_form.label :event_type_id, 'Event Type', { class: 'form-label' } %>
+                                    <%= event_detail_form.collection_select :event_type_id, EventType.order(id: :asc, display_order: :asc), :id, :name, { prompt: 'Select...' }, { class: 'form-select' } %>
+                                </div>
+                            <% end %>
+                            <div class="col-12">
+                                <p>Participation Day</p>
+                                <div class="form-check form-check-inline">
+                                    <%= form.radio_button :participation_day, 'Saturday', { class: 'form-check-input' } %>
+                                    <%= form.label :participation_day_saturday, 'Saturday', { class: 'form-check-label' } %>
+                                </div>
+                                <div class="form-check form-check-inline">
+                                    <%= form.radio_button :participation_day, 'Sunday', { class: 'form-check-input' } %>
+                                    <%= form.label :participation_day_sunday, 'Sunday', { class: 'form-check-label' } %>
+                                </div>
                             </div>
                         </div>
-                    </div>
+                    </fieldset>
                 </div>
+                <% if @can_edit_event %>
                 <div class="modal-footer">
                     <a id="delete-participant" class="btn btn-danger mr-auto text-white" data-redirect="events/<%= @event.id %>" data-participant="">Delete</a>
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
                     <button id="event-add-participant-button" type="button" class="btn btn-primary">Save</button>
                 </div>
+                <% end %>
             </div>
         <% end %>
     </div>
 </div>
-<% end %>
