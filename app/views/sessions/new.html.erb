@@ -4,13 +4,13 @@
             <div class="row pt-2 gy-3">
                 <div class="col-12">
                     <div class="form-floating required">
-                        <%= text_field_tag :username, nil, class: 'form-control' %>
+                        <%= text_field_tag :username, nil, { class: 'form-control', placeholder: 'Username' } %>
                         <%= label_tag :username %>
                     </div>
                 </div>
                 <div class="col-12">
                     <div class="form-floating required">
-                        <%= password_field_tag :password, nil, class: 'form-control' %>
+                        <%= password_field_tag :password, nil, { class: 'form-control', placeholder: 'Password' } %>
                         <%= label_tag :password %>
                     </div>
                 </div>
