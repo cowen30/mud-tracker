@@ -49,8 +49,8 @@
                         <%= form.text_field :user_id, value: @user.id, class: 'd-none' %>
                         <%= form.fields_for :event_detail, @new_participant.event_detail do |event_detail_form| %>
                             <div class="col-12">
-                                <%= event_detail_form.collection_select :event_id, Event.where(archived: false).order(date: :desc), :id, :name, { prompt: 'Select...' }, { class: 'form-select' } %>
                                 <%= event_detail_form.label :event_id, 'Event', { class: 'form-label' } %>
+                                <%= event_detail_form.collection_select :event_id, Event.where(archived: false).order(date: :desc), :id, :name, { prompt: 'Select...' }, { class: 'form-select' } %>
                             </div>
                             <div class="col-12">
                                 <%= event_detail_form.label :event_type_id, 'Event Type', { class: 'form-label' } %>
