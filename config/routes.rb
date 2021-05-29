@@ -2,6 +2,8 @@ Rails.application.routes.draw do
   root "home#index"
 
   resources :events
+  get 'about', to: 'home#about'
+
   resources :users
   resources :participants
 
