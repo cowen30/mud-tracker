@@ -1,12 +1,16 @@
 class UsersController < ApplicationController
 
-    skip_before_action :authorized, only: [:new, :create]
+    skip_before_action :authorized, only: [:new, :create, :reset_load, :reset_confirm, :reset_save]
 
     def index
         @users = User.where(active: true).order(last_name: :asc)
     end
 
-    def new
+    def welcome
+        @user = current_user
+        if @user.active || @user.verification_code.nil?
+            redirect_to @user
+        end
     end
 
     def create
@@ -14,7 +18,7 @@ class UsersController < ApplicationController
         @user.save
         helpers.send_welcome_email @user
         session[:user_id] = @user.id
-        redirect_to '/'
+        redirect_to '/welcome'
     end
 
     def verify
@@ -26,6 +30,35 @@ class UsersController < ApplicationController
             @user.updated_by = @user.id
             @user.save
             redirect_to @user
+        end
+    end
+
+    def reset_load
+        @user = User.find_by(id: params[:user_id])
+        if !@user.nil? && @user.reset_code == params[:reset_code]
+            render :reset_password_form
+        else
+            render :reset_password
+        end
+    end
+
+    def reset_confirm
+        @user = User.find_by(email: params[:email])
+        unless @user.nil?
+            helpers.send_password_reset_email @user
+        end
+        render :reset_password_confirm
+    end
+
+    def reset_save
+        @user = User.find_by(email: params[:email])
+        if !@user.nil? && @user.reset_code == params[:reset_code]
+            @user.password = params[:password]
+            @user.reset_code = nil
+            @user.save
+            render :reset_password_save
+        else
+            render :'common/error'
         end
     end
 

@@ -43,4 +43,14 @@ module EmailHelper
         send_email(to_email, subject, body)
     end
 
+    def send_password_reset_email(user)
+        reset_code = SecureRandom.hex(16)
+        user.reset_code = reset_code
+        user.save
+        to_email = user.email
+        subject = 'Reset Password'
+        body = "Please click the link below to reset your password.<br/><br/><a href=\"#{request.base_url}/reset-password?user_id=#{user.id}&reset_code=#{reset_code}\">Reset Password</a>"
+        send_email(to_email, subject, body)
+    end
+
 end
