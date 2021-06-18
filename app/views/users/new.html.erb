@@ -22,25 +22,28 @@
                     </div>
                 </div>
                 <div class="col-12">
-                    <div class="form-floating required">
-                        <%= form.text_field :username, { class: 'form-control', placeholder: 'Username' } %>
-                        <%= form.label :username, 'Username' %>
-                    </div>
+                    <small class="text-muted">Password requirements:
+                        <ul>
+                            <li id="password-req-length">8-100 characters</li>
+                            <li id="password-req-char-upper">At least 1 uppercase letter</li>
+                            <li id="password-req-char-special">At least 1 special character (!, @, #, $, %, ^, &, *)</li>
+                        </ul>
+                    </small>
                 </div>
-                <div class="col-12">
+                <div class="col-12 gy-0">
                     <div class="form-floating required">
-                        <%= form.password_field :password, { class: 'form-control', placeholder: 'Password' } %>
+                        <%= form.password_field :password, { id: 'password-input', class: 'form-control', placeholder: 'Password' } %>
                         <%= form.label :password, 'Password' %>
                     </div>
                 </div>
                 <div class="col-12">
                     <div class="form-floating required">
-                        <%= form.password_field :password_confirmation, { class: 'form-control', placeholder: 'Confirm Password' } %>
+                        <%= form.password_field :password_confirmation, { id: 'confirm-password-input', class: 'form-control', placeholder: 'Confirm Password' } %>
                         <%= form.label :password_confirmation, 'Confirm Password' %>
                     </div>
                 </div>
                 <div class="col-12">
-                    <%= form.submit 'Create Account', class: 'btn btn-primary btn-lg w-100' %>
+                    <%= form.submit 'Create Account', id: 'submit-button', class: 'btn btn-primary btn-lg w-100', disabled: true %>
                 </div>
             </div>
         <% end %>

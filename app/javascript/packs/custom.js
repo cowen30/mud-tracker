@@ -1,4 +1,10 @@
+const PWD_VALIDATION_SATISFIED_CLASSES = 'text-success fw-bold';
+const PWD_VALIDATION_UNSATISFIED_CLASSES = 'text-muted';
+let passwordIsValid = false;
+
 $(document).on('turbolinks:load', () => {
+    registerPasswordRequirementValidations();
+
     $('.clickable-row').on('click', (event) => {
         window.location = $(event.currentTarget).data('href');
     });
@@ -65,4 +71,69 @@ const addAttributesToRow = (row, attrs) => {
     $.each(attrs, (key, value) => {
         $(row).attr(key, value);
     });
+}
+
+const registerPasswordRequirementValidations = () => {
+    $('#password-input').on('keyup', (event) => {
+        let pwd = $(event.currentTarget).val();
+        let pwdConfirm = $('#confirm-password-input').val();
+        if (isValidPassword(pwd)) {
+            passwordIsValid = true;
+            if (validatePasswordConfirmation(pwd, pwdConfirm)) {
+                $('#submit-button').attr('disabled', false);
+            }
+        } else {
+            passwordIsValid = false;
+            $('#submit-button').attr('disabled', true);
+        }
+    });
+    $('#confirm-password-input').on('keyup', (event) => {
+        let pwd = $('#password-input').val();
+        let pwdConfirm = $(event.currentTarget).val();
+        if (passwordIsValid) {
+            if (validatePasswordConfirmation(pwd, pwdConfirm)) {
+                $('#submit-button').attr('disabled', false);
+            } else {
+                $('#submit-button').attr('disabled', true);
+            };
+        }
+    });
+}
+
+const isValidPassword = (pwd) => {
+    return validatePasswordLength(pwd) & validatePasswordUppercase(pwd) & validatePasswordSpecialChars(pwd);
+}
+
+const validatePasswordLength = (pwd) => {
+    if (pwd.length >= 8 && pwd.length <= 100) {
+        $('#password-req-length').addClass(PWD_VALIDATION_SATISFIED_CLASSES).removeClass(PWD_VALIDATION_UNSATISFIED_CLASSES);
+        return true;
+    } else {
+        $('#password-req-length').addClass(PWD_VALIDATION_UNSATISFIED_CLASSES).removeClass(PWD_VALIDATION_SATISFIED_CLASSES);
+        return false;
+    }
+}
+
+const validatePasswordUppercase = (pwd) => {
+    if (pwd.toLowerCase() != pwd) {
+        $('#password-req-char-upper').addClass(PWD_VALIDATION_SATISFIED_CLASSES).removeClass(PWD_VALIDATION_UNSATISFIED_CLASSES);
+        return true;
+    } else {
+        $('#password-req-char-upper').addClass(PWD_VALIDATION_UNSATISFIED_CLASSES).removeClass(PWD_VALIDATION_SATISFIED_CLASSES);
+        return false;
+    }
+}
+
+const validatePasswordSpecialChars = (pwd) => {
+    if (/[!@#$%^&*]/.test(pwd)) {
+        $('#password-req-char-special').addClass(PWD_VALIDATION_SATISFIED_CLASSES).removeClass(PWD_VALIDATION_UNSATISFIED_CLASSES);
+        return true;
+    } else {
+        $('#password-req-char-special').addClass(PWD_VALIDATION_UNSATISFIED_CLASSES).removeClass(PWD_VALIDATION_SATISFIED_CLASSES);
+        return false;
+    }
+}
+
+const validatePasswordConfirmation = (pwd, pwdConfirm) => {
+    return (pwd === pwdConfirm);
 }
