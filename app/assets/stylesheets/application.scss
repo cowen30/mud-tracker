@@ -12,6 +12,23 @@
  *
  */
 
+#main-nav .nav-item:after {
+    text-decoration: none !important;
+    display: block;
+    content: '';
+    border-bottom: 1px solid #ff6600;
+    transform: scaleX(0);
+    transition: transform 250ms ease-in-out;
+}
+
+#main-nav .nav-item:hover:after {
+    transform: scaleX(1);
+}
+
+.table-row:hover {
+    cursor: pointer;
+}
+
 @media (min-width: 768px) {
     #main-nav .navbar-nav > li {
         padding: 0 10px;
