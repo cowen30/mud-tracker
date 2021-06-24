@@ -11,6 +11,46 @@ $(document).on('turbolinks:load', () => {
 
     $('.data-table').DataTable(getTableParams({'search': false}));
 
+    $('#participantModal').on('show.bs.modal', (event) => {
+        const participantId = $(event.relatedTarget).data('participant');
+        if (participantId == undefined) {
+            $('#delete-participant').addClass('d-none');
+            $('#participant-modal-label').text('Add Participant');
+        } else {
+            $('#delete-participant').removeClass('d-none');
+            $('#participant-modal-label').text('Edit Participant');
+        }
+        
+        $('#participant_participant_id').val(participantId);
+        $('#participant_event_detail_attributes_event_id').val($(event.relatedTarget).data('event'));
+        $('#participant_event_detail_attributes_event_type_id').val($(event.relatedTarget).data('type'));
+
+        const race_day = $(event.relatedTarget).data('day');
+        if (race_day == undefined || race_day == '') {
+            $('input[name="participant[participation_day]"][value="Saturday"]').prop('checked', false);
+            $('input[name="participant[participation_day]"][value="Sunday"]').prop('checked', false);
+        } else {
+            $('input[name="participant[participation_day]"][value="' + race_day + '"]').prop('checked', true);
+        }
+    });
+
+    $('#delete-participant').on('click', (event) => {
+        const participantId = $('#participant_participant_id').val();
+        $.ajax({
+            method: 'DELETE',
+            url: '/participants/' + participantId
+        }).done((data) => {
+            $('#participantModal').modal('hide');
+            const table = $('#participant-table').DataTable();
+            const participantRow = $('#participant-table tr[data-participant="' + participantId + '"]');
+            participantRow.fadeOut('500', () => {
+                table.row(participantRow).remove().draw();
+            });
+        }).fail(() => {
+            alert('Error!');
+        });
+    });
+
     $('#user-add-participant-button, #event-add-participant-button').on('click', (event) => {
         const participantData = $('#participant-form').serialize();
         $.ajax({

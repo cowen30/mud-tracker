@@ -11,6 +11,13 @@ class ParticipantsController < ApplicationController
         end
     end
 
+    def destroy
+        @participant = Participant.find(params[:id])
+        unless @participant.destroy
+            render :'common/error'
+        end
+    end
+
     private
         def participant_params
             params.require(:participant).permit(:user_id, { event_detail_attributes: [ :event_id, :event_type_id ] }, :participation_day, :contender_status_id)
