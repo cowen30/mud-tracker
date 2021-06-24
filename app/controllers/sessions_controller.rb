@@ -15,7 +15,7 @@ class SessionsController < ApplicationController
                 redirect_to params[:redirect_url]
             end
         else
-            redirect_to new_session_path
+            redirect_to '/login'
         end
     end
 
