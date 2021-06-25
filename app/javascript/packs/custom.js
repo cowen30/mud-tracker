@@ -15,10 +15,10 @@ $(document).on('turbolinks:load', () => {
         const participantId = $(event.relatedTarget).data('participant');
         if (participantId == undefined) {
             $('#delete-participant').addClass('d-none');
-            $('#participant-modal-label').text('Add Participant');
+            $('#participant-modal-label').text('Add');
         } else {
             $('#delete-participant').removeClass('d-none');
-            $('#participant-modal-label').text('Edit Participant');
+            $('#participant-modal-label').text('Edit');
         }
         
         $('#participant_participant_id').val(participantId);
