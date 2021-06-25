@@ -13,7 +13,7 @@
 <% end %>
 <div class="row pt-3">
     <div class="col-12 col-xl-10 mx-auto table-responsive pt-2">
-        <table id="participant-table" class="table table-striped table-hover data-table">
+        <table id="participant-table" class="table table-striped <%= @can_edit_event ? 'table-hover' : nil %> data-table">
             <thead>
                 <tr>
                     <th>Name</th>
@@ -23,7 +23,7 @@
             </thead>
             <tbody>
             <% @participants.each do |participant| %>
-                <tr class="table-row" data-bs-toggle="modal" data-bs-target="#participantModal" data-participant="<%= participant.id %>" data-name="<%= participant.user.id %>" data-race="<%= participant.event_detail.event_id %>" data-type="<%= participant.event_detail.event_type_id %>" data-day="<%= participant.participation_day %>">
+                <tr class="<%= @can_edit_event ? 'table-row' : nil %>" data-bs-toggle="modal" data-bs-target="#participantModal" data-participant="<%= participant.id %>" data-name="<%= participant.user.id %>" data-race="<%= participant.event_detail.event_id %>" data-type="<%= participant.event_detail.event_type_id %>" data-day="<%= participant.participation_day %>">
                     <td><%= participant.user.full_name %></td>
                     <td><%= participant.event_detail.event_type.name %></td>
                     <td><%= participant.participation_day %></td>
@@ -34,7 +34,7 @@
     </div>
 </div>
 
-<% if logged_in? %>
+<% if @can_edit_event %>
 <!-- Participant Modal -->
 <div class="modal fade" id="participantModal" tabindex="-1" role="dialog" aria-labelledby="participantModalLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
@@ -49,13 +49,13 @@
                         <div class="row gy-3">
                             <div class="col-12">
                                 <%= form.label :user_id, 'Participant Name', { class: 'form-label' } %>
-                                <%= form.collection_select :user_id, User.where(id: current_user.id), :id, :full_name, { selected: current_user.id }, { class: 'form-select' } %>
+                                <%= form.collection_select :user_id, @user_list, :id, :full_name, { selected: current_user.id }, { class: 'form-select' } %>
                             </div>
                             <%= form.fields_for :event_detail, @new_participant.event_detail do |event_detail_form| %>
                                 <%= event_detail_form.text_field :event_id, value: @event.id, class: 'd-none' %>
                                 <div class="col-12">
                                     <%= event_detail_form.label :event_type_id, 'Event Type', { class: 'form-label' } %>
-                                    <%= event_detail_form.collection_select :event_type_id, EventType.where(brand_id: @event.brand_id).order(display_order: :asc), :id, :name, { prompt: 'Select...' }, { class: 'form-select' } %>
+                                    <%= event_detail_form.collection_select :event_type_id, @event_types, :id, :name, { prompt: 'Select...' }, { class: 'form-select' } %>
                                 </div>
                             <% end %>
                             <div class="col-12">
