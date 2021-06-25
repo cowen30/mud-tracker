@@ -48,13 +48,13 @@
                         <div class="row gy-3">
                             <div class="col-12">
                                 <%= form.label :user_id, 'Participant Name', { class: 'form-label' } %>
-                                <%= form.collection_select :user_id, User.where(active: true).order(last_name: :asc), :id, :full_name, { prompt: 'Select...' }, { class: 'form-select' } %>
+                                <%= form.collection_select :user_id, User.where(id: current_user.id), :id, :full_name, { selected: current_user.id }, { class: 'form-select' } %>
                             </div>
                             <%= form.fields_for :event_detail, @new_participant.event_detail do |event_detail_form| %>
                                 <%= event_detail_form.text_field :event_id, value: @event.id, class: 'd-none' %>
                                 <div class="col-12">
                                     <%= event_detail_form.label :event_type_id, 'Event Type', { class: 'form-label' } %>
-                                    <%= event_detail_form.collection_select :event_type_id, EventType.order(id: :asc, display_order: :asc), :id, :name, { prompt: 'Select...' }, { class: 'form-select' } %>
+                                    <%= event_detail_form.collection_select :event_type_id, EventType.where(brand_id: @event.brand_id).order(display_order: :asc), :id, :name, { prompt: 'Select...' }, { class: 'form-select' } %>
                                 </div>
                             <% end %>
                             <div class="col-12">
