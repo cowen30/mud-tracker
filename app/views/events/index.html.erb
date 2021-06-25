@@ -26,7 +26,7 @@
             </thead>
             <tbody>
                 <% @events.each do |event| %>
-                <tr class="clickable-row" data-href="<%= event_path(event) %>">
+                <tr class="table-row clickable-row" data-href="<%= event_path(event) %>">
                     <td><%= event.name %></td>
                     <td><%= "#{event.city}, #{event.state}" %>
                     <td data-sort="<%= event.date.strftime('%Y%m%d') %>"><%= event.date.nil? ? '' : event.date.strftime('%b %-d, %Y') %></td>
