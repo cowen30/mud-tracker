@@ -24,6 +24,9 @@ $(document).on('turbolinks:load', () => {
         $('#participant_participant_id').val(participantId);
         $('#participant_event_detail_attributes_event_id').val($(event.relatedTarget).data('event'));
         $('#participant_event_detail_attributes_event_type_id').val($(event.relatedTarget).data('type'));
+        const brandId = $('#participant_event_detail_attributes_event_id').find('option:selected').data('brand');
+        updateEventDropdown(brandId);
+        updateEventTypeDropdown(brandId);
 
         const race_day = $(event.relatedTarget).data('day');
         if (race_day == undefined || race_day == '') {
@@ -32,6 +35,16 @@ $(document).on('turbolinks:load', () => {
         } else {
             $('input[name="participant[participation_day]"][value="' + race_day + '"]').prop('checked', true);
         }
+    });
+
+    $('#participant_event_detail_attributes_event_id').on('change', (event) => {
+        const selectedBrand = $(event.currentTarget).find('option:selected').data('brand');
+        updateEventTypeDropdown(selectedBrand);
+    });
+
+    $('#participant_event_detail_attributes_event_type_id').on('change', (event) => {
+        const selectedBrand = $(event.currentTarget).find('option:selected').data('brand');
+        updateEventDropdown(selectedBrand);
     });
 
     $('#delete-participant').on('click', (event) => {
@@ -110,6 +123,26 @@ const addRowToTable = (tableId, rowData) => {
 const addAttributesToRow = (row, attrs) => {
     $.each(attrs, (key, value) => {
         $(row).attr(key, value);
+    });
+}
+
+const updateEventDropdown = (brandId) => {
+    $('#participant_event_detail_attributes_event_id option:not(:first)').each((_, element) => {
+        if (brandId == undefined) {
+            $(element).removeClass('d-none');
+        } else {
+            $(element).toggleClass('d-none', $(element).data('brand') !== brandId);
+        }
+    });
+}
+
+const updateEventTypeDropdown = (brandId) => {
+    $('#participant_event_detail_attributes_event_type_id option:not(:first)').each((_, element) => {
+        if (brandId == undefined) {
+            $(element).removeClass('d-none');
+        } else {
+            $(element).toggleClass('d-none', $(element).data('brand') !== brandId);
+        }
     });
 }
 

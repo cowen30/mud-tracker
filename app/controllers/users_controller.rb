@@ -70,6 +70,8 @@ class UsersController < ApplicationController
             @participants = Participant.includes(event_detail: [ :event, :event_type ]).where(user_id: params[:id]).order(Arel.sql('events.date DESC'), Arel.sql('participants.participation_day DESC'), Arel.sql('event_types.display_order ASC'))
             @new_participant = Participant.new
             @new_participant.event_detail = EventDetail.new
+            @events = Event.where(archived: false).order(date: :desc)
+            @event_types = EventType.includes(:brand).order(Arel.sql('brands.id ASC'), display_order: :asc)
             @active_tab = 'details'
             if !params['tab'].nil?
                 @active_tab = params['tab']

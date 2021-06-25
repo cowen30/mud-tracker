@@ -52,11 +52,11 @@
                         <%= form.fields_for :event_detail, @new_participant.event_detail do |event_detail_form| %>
                             <div class="col-12">
                                 <%= event_detail_form.label :event_id, 'Event', { class: 'form-label' } %>
-                                <%= event_detail_form.collection_select :event_id, Event.where(archived: false, approved: :true).order(date: :desc), :id, :name, { prompt: 'Select...' }, { class: 'form-select' } %>
+                                <%= event_detail_form.select :event_id, options_for_select(@events.map{ |event| [event.name, event.id, { 'data-brand' => event.brand_id }] }), { prompt: 'Select...' }, { class: 'form-select' } %>
                             </div>
                             <div class="col-12">
                                 <%= event_detail_form.label :event_type_id, 'Event Type', { class: 'form-label' } %>
-                                <%= event_detail_form.collection_select :event_type_id, EventType.order(id: :asc, display_order: :asc), :id, :name, { prompt: 'Select...' }, { class: 'form-select' } %>
+                                <%= event_detail_form.select :event_type_id, options_for_select(@event_types.map{ |event_type| [event_type.name, event_type.id, { 'data-brand' => event_type.brand_id }] }), { prompt: 'Select...' }, { class: 'form-select' } %>
                             </div>
                         <% end %>
                         <div class="col-12">
