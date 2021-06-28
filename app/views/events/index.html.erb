@@ -49,14 +49,14 @@
                 </div>
                 <div class="modal-body">
                     <div class="row pt-2 gx-2 gy-3">
-                        <div class="col-12">
-                          <%= form.collection_radio_buttons :brand_id, Brand.order(:id), :id, :name do |b| %>
-                            <div class="form-check form-check-inline">
-                                <%= b.radio_button class: 'form-check-input' %>
-                                <%= b.label class: 'form-check-label' %>
+                        <% Brand.order(:id).each do |brand| %>
+                        <div class="col-4">
+                            <div class="brand-logo p-1 rounded">
+                                <img src="<%= brand.logo_path %>" class="img-fluid" />
+                                <input class="d-none" type="radio" value="<%= brand.id %>" name="event[brand_id]" id="event_brand_id_<%= brand.id %>">
                             </div>
-                          <% end %>
                         </div>
+                        <% end %>
                         <div class="col-12">
                             <%= form.label :name, 'Event Name', { class: 'form-label' } %>
                             <%= form.text_field :name, { class: 'form-control' } %>

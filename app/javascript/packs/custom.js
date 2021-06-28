@@ -114,6 +114,16 @@ $(document).on('turbolinks:load', () => {
             alert('Error!');
         });
     });
+
+    $('.brand-logo').on('click', (event) => {
+        if ($(event.currentTarget).hasClass('border')) {
+            $(event.currentTarget).removeClass(['border', 'border-secondary']);
+        } else {
+            $(event.currentTarget).find('input').prop('checked', true);
+            $(event.currentTarget).addClass(['border', 'border-secondary']);
+        }
+        $(event.currentTarget).parent().siblings().children('.brand-logo').removeClass(['border', 'border-secondary']);
+    });
 });
 
 const getTableParams = (options) => {
