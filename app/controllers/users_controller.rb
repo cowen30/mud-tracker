@@ -1,6 +1,6 @@
 class UsersController < ApplicationController
 
-    skip_before_action :authorized, only: [:new, :create, :reset_load, :reset_confirm, :reset_save]
+    skip_before_action :authorized, only: %i[new create reset_load reset_confirm reset_save]
 
     def index
         @users = User.where(active: true).order(last_name: :asc)
