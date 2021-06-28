@@ -73,10 +73,16 @@
                     </fieldset>
                 </div>
                 <% if @can_edit_event %>
-                <div class="modal-footer">
-                    <a id="delete-participant" class="btn btn-danger mr-auto text-white" data-redirect="events/<%= @event.id %>" data-participant="">Delete</a>
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                    <button id="event-add-participant-button" type="button" class="btn btn-primary">Save</button>
+                <div class="modal-footer d-block">
+                    <div class="row justify-content-between gx-0">
+                        <div class="col-auto">
+                            <a id="delete-participant" class="btn btn-danger text-white" data-redirect="events/<%= @event.id %>" data-participant="">Delete</a>
+                        </div>
+                        <div class="col-auto d-flex gap-2">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                            <button id="event-add-participant-button" type="button" class="btn btn-primary">Save</button>
+                        </div>
+                    </div>
                 </div>
                 <% end %>
             </div>

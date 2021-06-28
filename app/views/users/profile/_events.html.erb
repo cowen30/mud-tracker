@@ -48,7 +48,7 @@
                 <div class="modal-body">
                     <div class="row gy-3">
                         <%= form.text_field :user_id, value: @user.id, class: 'd-none' %>
-                        <%= form.text_field :participant_id, value: @new_participant.id, class: 'd-none' %>
+                        <%= form.text_field :id, value: @new_participant.id, class: 'd-none' %>
                         <%= form.fields_for :event_detail, @new_participant.event_detail do |event_detail_form| %>
                             <div class="col-12">
                                 <%= event_detail_form.label :event_id, 'Event', { class: 'form-label' } %>

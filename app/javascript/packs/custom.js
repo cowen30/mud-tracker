@@ -21,7 +21,7 @@ $(document).on('turbolinks:load', () => {
             $('#participant-modal-label').text('Edit');
         }
         
-        $('#participant_participant_id').val(participantId);
+        $('#participant_id').val(participantId);
         $('#participant_event_detail_attributes_event_id').val($(event.relatedTarget).data('event'));
         $('#participant_event_detail_attributes_event_type_id').val($(event.relatedTarget).data('type'));
         const brandId = $('#participant_event_detail_attributes_event_id').find('option:selected').data('brand');
@@ -66,25 +66,41 @@ $(document).on('turbolinks:load', () => {
 
     $('#user-add-participant-button, #event-add-participant-button').on('click', (event) => {
         const participantData = $('#participant-form').serialize();
+        const participantId = $('#participant_id').val();
+        let method = 'POST';
+        let url = '/participants'
+        if (participantId != '') {
+            method = 'PUT';
+            url = '/participants/' + participantId;
+        }
         $.ajax({
-            method: 'POST',
-            url: $('#participant-form').attr('action'),
+            method: method,
+            url: url,
             data: participantData
         }).done((data) => {
             $('#participantModal').modal('hide');
             
             let firstColumnData = data.event_detail.event.name
-            
+
             if ($(event.currentTarget).attr('id') === 'event-add-participant-button') {
                 firstColumnData = data.user.first_name + ' ' + data.user.last_name;
             }
 
-            let row = addRowToTable('#participant-table', [
+            let row = undefined;
+            const rowData = [
                 firstColumnData,
                 data.event_detail.event_type.name,
                 data.participation_day
-            ]);
+            ];
 
+            if (participantId == '') {
+                row = addRowToTable('#participant-table', rowData);
+                $(row).addClass('table-row');
+            } else {
+                const rowIndex = $('#participant-table tr[data-participant=' + participantId + ']').index();
+                row = editRowInTable('#participant-table', rowIndex, rowData);
+            }
+    
             addAttributesToRow(row, {
                 'data-bs-toggle': 'modal',
                 'data-bs-target': '#participantModal',
@@ -116,8 +132,13 @@ const getTableParams = (options) => {
 }
 
 const addRowToTable = (tableId, rowData) => {
-    let table = $(tableId).DataTable();
+    const table = $(tableId).DataTable();
     return table.row.add(rowData).draw().node();
+}
+
+const editRowInTable = (tableId, index, rowData) => {
+    const table = $(tableId).DataTable();
+    return table.row(index).data(rowData).draw().node();
 }
 
 const addAttributesToRow = (row, attrs) => {

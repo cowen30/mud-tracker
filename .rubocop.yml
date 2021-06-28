@@ -1,8 +1,10 @@
 AllCops:
     NewCops: enable
-Layout/IndentationWidth:
-    Width: 4
 Layout/EmptyLinesAroundModuleBody:
     Enabled: false
 Layout/EmptyLinesAroundClassBody:
+    Enabled: false
+Layout/IndentationWidth:
+    Width: 4
+Layout/LineLength:
     Enabled: false
