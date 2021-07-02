@@ -15,8 +15,38 @@
 <% end %>
 
 <div class="row pt-3">
-    <div class="col-12 col-md-8 mx-auto">
-        <table class="table table-striped table-hover data-table">
+    <div class="col-12 col-md-10 col-xl-8 mx-auto">
+        <div class="row gx-1">
+            <div class="col-2 col-lg-1">
+                <button type="button" class="w-100 btn btn-outline-primary event-filter-year" value="" data-bs-toggle="button">All</button>
+            </div>
+          <% @event_years.each do |year| %>
+            <div class="col-2 col-lg-1">
+                <button type="button" class="w-100 btn btn-outline-primary event-filter-year" value="<%= year %>" data-bs-toggle="button"><%= year %></button>
+            </div>
+          <% end %>
+        </div>
+    </div>
+</div>
+
+<div class="row pt-3">
+    <div class="col-12 col-md-10 col-xl-8 mx-auto">
+        <div class="row gx-1">
+            <div class="col-4 col-lg-3">
+                <button type="button" class="w-100 btn btn-outline-primary event-filter-brand" value="" data-bs-toggle="button">All</button>
+            </div>
+          <% @event_brands.each do |brand| %>
+            <div class="col-4 col-lg-3">
+                <button type="button" class="w-100 btn btn-outline-primary event-filter-brand" value="<%= brand.id %>" data-bs-toggle="button"><%= brand.name %></button>
+            </div>
+          <% end %>
+        </div>
+    </div>
+</div>
+
+<div class="row pt-3">
+    <div class="col-12 col-md-10 col-xl-8 mx-auto">
+        <table id="events-table" class="table table-striped table-hover data-table">
             <thead>
                 <tr>
                     <th>Event Name</th>
@@ -27,9 +57,9 @@
             <tbody>
                 <% @events.each do |event| %>
                 <tr class="table-row clickable-row" data-href="<%= event_path(event) %>">
-                    <td><%= event.name %></td>
+                    <td data-search="<%= event.brand_id %>"><%= event.name %></td>
                     <td><%= "#{event.city}, #{event.state}" %>
-                    <td data-sort="<%= event.date.strftime('%Y%m%d') %>"><%= event.date.nil? ? '' : event.date.strftime('%b %-d, %Y') %></td>
+                    <td data-sort="<%= event.date.strftime('%Y%m%d') %>" data-search="<%= event.date.strftime('%Y%m%d') %>"><%= event.date.nil? ? '' : event.date.strftime('%b %-d, %Y') %></td>
                 </tr>
                 <% end %>
             </tbody>

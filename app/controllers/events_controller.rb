@@ -2,9 +2,11 @@ class EventsController < ApplicationController
 
   skip_before_action :authorized, only: [:index, :show]
 
-  def index
-    @events = Event.where(archived: false).order(date: :desc)
-  end
+    def index
+        @events = Event.where(archived: false, approved: true).order(date: :desc)
+        @event_years = @events.select(:date).map { |event| event.date.year }.uniq
+        @event_brands = @events.includes(:brand).map(&:brand).uniq.sort!
+    end
 
   def create
     @event = Event.new(event_params)

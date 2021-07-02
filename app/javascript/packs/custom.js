@@ -124,20 +124,43 @@ $(document).on('turbolinks:load', () => {
         }
         $(event.currentTarget).parent().siblings().children('.brand-logo').removeClass(['border', 'border-secondary']);
     });
+
+    $('.event-filter-year').on('click', () => {
+        let selectedYears = '';
+        if ($('.event-filter-year.active').length > 0) {
+            selectedYears = $('.event-filter-year.active:first').val();
+        }
+        $('.event-filter-year.active:not(:first)').each((_, yearElement) => {
+            selectedYears += '|' + $(yearElement).val();
+        });
+        filterTableByValue('#events-table', 2, selectedYears);
+    });
+
+    $('.event-filter-brand').on('click', () => {
+        let selectedBrands = '';
+        if ($('.event-filter-brand.active').length > 0) {
+            selectedBrands = $('.event-filter-brand.active:first').val();
+        }
+        $('.event-filter-brand.active:not(:first)').each((_, brandElement) => {
+            selectedBrands += '|' + $(brandElement).val();
+        });
+        filterTableByValue('#events-table', 0, selectedBrands);
+    });
 });
 
 const getTableParams = (options) => {
-    var search = false;
+    let dom = 'ltr';
     if (options === undefined || options.search === undefined || options.search === true) {
-      search = true;
+        dom += 's';
     }
     return {
-      "order": [],
-      "lengthMenu": [[10, 25, 50, -1], [10, 25, 50, "All"]],
-      iDisplayLength: -1,
-      "paging": false,
-      "info": false,
-      "searching": search
+        'order': [],
+        'lengthMenu': [[10, 25, 50, -1], [10, 25, 50, 'All']],
+        iDisplayLength: -1,
+        'paging': false,
+        'info': false,
+        'searching': true,
+        'dom': dom
     };
 }
 
@@ -175,6 +198,13 @@ const updateEventTypeDropdown = (brandId) => {
             $(element).toggleClass('d-none', $(element).data('brand') !== brandId);
         }
     });
+}
+
+const filterTableByValue = (tableId, dateColumn, filterValue) => {
+    const table = $(tableId).DataTable();
+    table.column(dateColumn)
+        .search(filterValue, true, false)
+        .draw();
 }
 
 const registerPasswordRequirementValidations = () => {
