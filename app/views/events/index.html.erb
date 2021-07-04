@@ -79,14 +79,22 @@
                 </div>
                 <div class="modal-body">
                     <div class="row pt-2 gx-2 gy-3">
-                        <% Brand.order(:id).each do |brand| %>
-                        <div class="col-4">
-                            <div class="brand-logo p-1 rounded">
-                                <img src="<%= brand.logo_path %>" class="img-fluid" />
-                                <input class="d-none" type="radio" value="<%= brand.id %>" name="event[brand_id]" id="event_brand_id_<%= brand.id %>">
+                        <div class="col-12">
+                            <div class="row align-items-center">
+                                <% Brand.order(:id).each do |brand| %>
+                                <div class="col-4">
+                                    <div class="brand-logo p-1 rounded h-100">
+                                        <% if brand.logo_path.nil? %>
+                                        <div class="text-center"><%= brand.name %></div>
+                                        <% else %>
+                                        <%= image_tag brand.logo_path, class: "img-fluid" %>
+                                        <% end %>
+                                        <input class="d-none" type="radio" value="<%= brand.id %>" name="event[brand_id]" id="event_brand_id_<%= brand.id %>">
+                                    </div>
+                                </div>
+                                <% end %>
                             </div>
                         </div>
-                        <% end %>
                         <div class="col-12">
                             <%= form.label :name, 'Event Name', { class: 'form-label' } %>
                             <%= form.text_field :name, { class: 'form-control' } %>
