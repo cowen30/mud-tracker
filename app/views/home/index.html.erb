@@ -1,2 +1,47 @@
-<h1>Home#index</h1>
-<p>Find me in app/views/home/index.html.erb</p>
+<div class="py-5 text-white" style="background-color: #ff6600;">
+    <div class="row">
+        <div class="col-12 text-center">
+            <h1 class="display-5">Run. Climb. Crawl. Volunteer.</h1>
+            <h1>Track your OCRs with MudTrackr.</h1>
+        </div>
+    </div>
+    <div class="row py-3">
+        <div class="col gap-2 d-flex justify-content-center">
+            <%= link_to 'Create Account', '/create-account', class: 'btn btn-outline-light btn-lg' %>
+            <%= link_to 'Login', '/login', class: 'btn btn-light btn-lg' %>
+        </div>
+    </div>
+    <div class="row pt-4 justify-content-center align-items-center text-center">
+        <div class="col-12 col-sm-6 col-md-3 order-2 order-md-1">
+            <div class="card border-0 bg-transparent">
+                <div class="card-body">
+                    <h5 class="card-title">Track your challenges</h5>
+                    <p class="card-text">Compete in a virtual event or challenge? See your effort and hard-earned badges here.</p>
+                    <a href="#" class="btn btn-outline-light">Coming Soon!</a>
+                </div>
+            </div>
+        </div>
+        <div class="col-12 col-sm-12 col-md-4 order-1 order-md-2">
+            <div class="row">
+                <div class="col-12 col-sm-8 col-md-12 mx-auto">
+                    <div class="card border-0 bg-transparent">
+                        <div class="card-body">
+                            <h5 class="card-title">Keep track of your events</h5>
+                            <p class="card-text">Whether it's a Tough Mudder, Spartan, Savage Race, or another OCR, keep track of which ones you've participated in, and add any competitive results to see how you stack up. Don't see your event here? Submit it and we'll get it added so you can see all your data.</p>
+                            <%= link_to 'Events', events_path, class: 'btn btn-outline-light' %>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-12 col-sm-6 col-md-3 order-3">
+            <div class="card border-0 bg-transparent">
+                <div class="card-body">
+                    <h5 class="card-title">Track volunteer hours</h5>
+                    <p class="card-text">Enjoy discounts? Track your volunteer shifts and show how many hours you've given back.</p>
+                    <a href="#" class="btn btn-outline-light">Coming Soon!</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
