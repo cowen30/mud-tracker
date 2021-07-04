@@ -1,8 +1,8 @@
 class HomeController < ApplicationController
 
-    skip_before_action :authorized, only: [:index, :about]
+    skip_before_action :authorized, only: %i[index about]
+    layout 'home', only: %i[index]
 
-    def index
-    end
+    def index; end
 
 end
