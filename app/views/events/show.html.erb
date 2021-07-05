@@ -9,31 +9,30 @@
 <div class="row pt-3">
     <div class="col-12">
         <div class="row">
-            <div class="col-2 col-md-3">
-                <div class="nav flex-column nav-pills text-center" id="v-pills-tab" role="tablist" aria-orientation="vertical">
-                    <button class="nav-link text-md-start <%= (@active_tab.nil? || @active_tab == 'details') ? 'active' : nil %>" id="v-pills-details-tab" data-bs-toggle="pill" data-bs-target="#v-pills-details" type="button" role="tab" aria-controls="v-pills-details" aria-selected="<%= (@active_tab.nil? || @active_tab == 'details') ? 'true' : 'false' %>">
-                        <i class="bi bi-calendar3 d-md-none"></i>
-                        <span class="d-none d-md-block">Details</span>
-                    </button>
-                    <button class="nav-link text-md-start <%= @active_tab == 'event-types' ? 'active' : nil %>" id="v-pills-event-types-tab" data-bs-toggle="pill" data-bs-target="#v-pills-event-types" type="button" role="tab" aria-controls="v-pills-event-types" aria-selected="<%= @active_tab == 'event-types' ? 'true' : 'false' %>">
-                        <i class="bi bi-calendar3 d-md-none"></i>
-                        <span class="d-none d-md-block">Event Types</span>
-                    </button>
-                    <button class="nav-link text-md-start <%= @active_tab == 'participants' ? 'active' : nil %>" id="v-pills-participants-tab" data-bs-toggle="pill" data-bs-target="#v-pills-participants" type="button" role="tab" aria-controls="v-pills-participants" aria-selected="<%= @active_tab == 'participants' ? 'true' : 'false' %>">
-                        <i class="bi bi-calendar3 d-md-none"></i>
-                        <span class="d-none d-md-block">Participants</span>
-                    </button>
-                </div>
+            <div class="col-12">
+                <ul class="nav nav-tabs" id="event-tabs" role="tablist">
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link <%= @active_tab == 'details' ? 'active' : nil %>" id="details-tab" data-bs-toggle="tab" data-bs-target="#details-content" type="button" role="tab" aria-controls="details-tab" aria-selected="<%= @active_tab == 'details' ? 'true' : 'false' %>">Details</button>
+                    </li>
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link <%= @active_tab == 'event-types' ? 'active' : nil %>" id="event-types-tab" data-bs-toggle="tab" data-bs-target="#event-types-content" type="button" role="tab" aria-controls="event-types-tab" aria-selected="<%= @active_tab == 'event-types' ? 'true' : 'false' %>">Event Types</button>
+                    </li>
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link <%= @active_tab == 'participants' ? 'active' : nil %>" id="participants-tab" data-bs-toggle="tab" data-bs-target="#participants-content" type="button" role="tab" aria-controls="participants-tab" aria-selected="<%= @active_tab == 'participants' ? 'true' : 'false' %>">Participants</button>
+                    </li>
+                </ul>
             </div>
-            <div class="col-10 col-md-9">
-                <div class="tab-content" id="v-pills-tabContent">
-                    <div class="tab-pane fade <%= (@active_tab == nil || @active_tab == 'details') ? 'show active' : nil %>" id="v-pills-details" role="tabpanel" aria-labelledby="v-pills-details-tab">
+        </div>
+        <div class="row pt-3 justify-content-center">
+            <div class="col-12 col-md-9">
+                <div class="tab-content" id="tab-content">
+                    <div class="tab-pane fade <%= (@active_tab == nil || @active_tab == 'details') ? 'show active' : nil %>" id="details-content" role="tabpanel" aria-labelledby="details-tab">
                         <%= render 'events/partials/details', locals: { event: @event } %>
                     </div>
-                    <div class="tab-pane fade <%= @active_tab == 'event-types' ? 'show active' : nil %>" id="v-pills-event-types" role="tabpanel" aria-labelledby="v-pills-event-types-tab">
+                    <div class="tab-pane fade <%= @active_tab == 'event-types' ? 'show active' : nil %>" id="event-types-content" role="tabpanel" aria-labelledby="event-types-tab">
                         <%= render 'events/partials/event_details', locals: { event_details: @event_details } %>
                     </div>
-                    <div class="tab-pane fade <%= @active_tab == 'participants' ? 'show active' : nil %>" id="v-pills-participants" role="tabpanel" aria-labelledby="v-pills-participants-tab">
+                    <div class="tab-pane fade <%= @active_tab == 'participants' ? 'show active' : nil %>" id="participants-content" role="tabpanel" aria-labelledby="participants-tab">
                         <%= render 'events/partials/participants', locals: { event: @event, participants: @participants } %>
                     </div>
                 </div>

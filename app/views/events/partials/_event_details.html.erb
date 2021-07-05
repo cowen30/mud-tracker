@@ -1,22 +1,124 @@
-<div class="row">
-  <% @event_details.each do |ed| %>
-    <div class="col-12">
-        <div class="row">
-            <div class="col-4">
-                <h5><%= ed.event_type.name %></h5>
+<div class="row pt-3 row-cols-1 row-cols-sm-2 row-cols-md-1 row-cols-lg-2 row-cols-xl-3">
+    <% @event_details.each do |detail| %>
+    <div class="col mb-4">
+        <div class="card h-100">
+            <div class="loading-div position-absolute h-100 bg-secondary justify-content-center d-none" style="z-index:999;opacity:.7;width:100%;">
+                <div class="spinner-container h-100 align-items-center d-none">
+                    <div class="spinner-border text-danger" role="status">
+                        <span class="sr-only">Saving...</span>
+                    </div>
+                </div>
+                <div class="saved h-100 align-items-center text-success d-none">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="75" height="75" fill="currentColor" class="bi bi-check2" viewBox="0 0 16 16">
+                        <path d="M13.854 3.646a.5.5 0 0 1 0 .708l-7 7a.5.5 0 0 1-.708 0l-3.5-3.5a.5.5 0 1 1 .708-.708L6.5 10.293l6.646-6.647a.5.5 0 0 1 .708 0z"/>
+                    </svg>
+                </div>
             </div>
-            <div class="col-4">
-                <dl class="row">
-                    <dt class="col-9 text-end">Lap Distance</dt>
-                    <dd class="col-3"><%= ed.lap_distance %> mi.</dd>
-
-                    <dt class="col-9 text-end">Lap Elevation</dt>
-                    <dd class="col-3"><%= ed.lap_elevation %> ft.</dd>
-                </dl>
+            <div class="card-body">
+                <input class="d-none" name="event-id" value="<%= @event.id %>">
+                <div class="row">
+                    <input id="event-type-<%= detail.event_type.id %>" type="text" readonly class="form-control-plaintext card-title h5 text-center col-12" value="<%= detail.event_type.name %>">
+                </div>
+                <div class="row gy-2">
+                    <label class="col-8 form-label" for="lap-distance">Lap Distance (mi.)</label>
+                    <div class="col-4">
+                        <%= number_field_tag :lap_distance, detail.lap_distance, { disabled: !logged_in?, class: 'form-control form-control-sm', inputmode: 'decimal', min: 0 } %>
+                    </div>
+                    <label class="col-8 form-label" for="lap-elevation">Lap Elevation (ft.)</label>
+                    <div class="col-4">
+                        <%= number_field_tag :lap_elevation, detail.lap_elevation, { disabled: !logged_in?, class: 'form-control form-control-sm', inputmode: 'decimal', min: 0 } %>
+                    </div>
+                </div>
             </div>
-            <div class="col-4">
+            <% if logged_in? %>
+            <div class="card-footer">
+                <div class="row d-flex justify-content-center mb-0">
+                    <div class="col-6 d-grid">
+                        <%= button_tag 'Save', type: 'button', class: 'btn btn-primary btn-sm event-type-save', disabled: @event.archived %>
+                    </div>
+                    <% unless @event.archived %>
+                    <div class="col-6 d-grid">
+                        <%= button_tag 'Delete', type: 'button', class: 'btn btn-danger btn-sm event-type-delete' %>
+                    </div>
+                    <% end %>
+                </div>
             </div>
+            <% end %>
         </div>
     </div>
-  <% end %>
+    <% end %>
+    <% if logged_in? %>
+        <% unless @event.archived %>
+        <div id="add-event-type" class="col mb-4">
+            <div class="card h-100">
+                <div class="card-body d-flex justify-content-center">
+                    <div class="row align-items-center">
+                        <div class="col-12">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="50" height="50" fill="currentColor" class="bi bi-plus-circle" viewBox="0 0 16 16">
+                                <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"/>
+                                <path d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4z"/>
+                            </svg>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <% end %>
+        <div id="event-type-template" class="col mb-4 d-none">
+            <div class="card h-100">
+                <div class="loading-div position-absolute h-100 bg-secondary justify-content-center d-none" style="z-index:999;opacity:.7;width:100%;">
+                    <div class="spinner-container h-100 align-items-center d-none">
+                        <div class="spinner-border text-danger" role="status">
+                            <span class="sr-only">Saving...</span>
+                        </div>
+                    </div>
+                    <div class="saved h-100 align-items-center text-success d-none">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="75" height="75" fill="currentColor" class="bi bi-check2" viewBox="0 0 16 16">
+                            <path d="M13.854 3.646a.5.5 0 0 1 0 .708l-7 7a.5.5 0 0 1-.708 0l-3.5-3.5a.5.5 0 1 1 .708-.708L6.5 10.293l6.646-6.647a.5.5 0 0 1 .708 0z"/>
+                        </svg>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <input class="d-none" name="event-id" value="<%= @event.id %>">
+                    <div class="row">
+                        <div class="col-12">
+                            <select class="form-select form-select-sm" id="event-type" name="event-type">
+                                <option value="">Select...</option>
+                                <%
+                                    EventType.order(display_order: :asc).each do |type|
+                                %>
+                                <option value=<%= type.id %>><%= type.name %></option>
+                                <% end %>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="row gy-2 pt-3">
+                        <label class="col-8 form-label" for="lap-distance">Lap Distance (mi.)</label>
+                        <div class="col-4">
+                            <input type="number" inputmode="decimal" id="lap-distance" class="form-control form-control-sm" name="lap-distance">
+                        </div>
+                        <label class="col-8 form-label" for="lap-elevation">Lap Elevation (ft.)</label>
+                        <div class="col-4">
+                            <input type="number" inputmode="decimal" id="lap-elevation" class="form-control form-control-sm" name="lap-elevation">
+                        </div>
+                    </div>
+                </div>
+                <div class="card-footer">
+                    <div class="row mb-0">
+                        <div class="col-6 d-grid">
+                            <button type="button" class="btn btn-primary btn-sm event-type-save">Save</button>
+                        </div>
+                        <div class="col-6 d-grid">
+                            <button type="button" class="btn btn-secondary btn-sm event-type-cancel">Cancel</button>
+                        </div>
+                        <% unless @event.archived %>
+                        <div class="col-6 d-grid d-none">
+                            <button type="button" class="btn btn-danger btn-sm event-type-delete">Delete</button>
+                        </div>
+                        <% end %>
+                    </div>
+                </div>
+            </div>
+        </div>
+    <% end %>
 </div>
