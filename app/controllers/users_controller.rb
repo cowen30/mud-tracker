@@ -64,24 +64,22 @@ class UsersController < ApplicationController
 
     def show
         @user = User.find(params[:id])
-        if !@user.active
-            redirect_to '/'
-        else
-            @participants = Participant.includes(event_detail: [ :event, :event_type ]).where(user_id: params[:id]).order(Arel.sql('events.date DESC'), Arel.sql('participants.participation_day DESC'), Arel.sql('event_types.display_order ASC'))
+        if @user.active
+            @participants = Participant.includes(event_detail: %i[event event_type]).where(user_id: params[:id]).order(Arel.sql('events.date DESC'), Arel.sql('participants.participation_day DESC'), Arel.sql('event_types.display_order ASC'))
             @new_participant = Participant.new
             @new_participant.event_detail = EventDetail.new
             @events = Event.where(archived: false).order(date: :desc)
             @event_types = EventType.includes(:brand).order(Arel.sql('brands.id ASC'), display_order: :asc)
-            @active_tab = 'details'
-            if !params['tab'].nil?
-                @active_tab = params['tab']
-            end
+            @active_tab = params['tab'].nil? ? 'details' : params['tab']
+        else
+            redirect_to '/'
         end
     end
 
     private
-        def user_params
-            params.require(:user).permit(:first_name, :last_name, :email, :username, :password, :password_confirmation)
-        end
+
+    def user_params
+        params.require(:user).permit(:first_name, :last_name, :email, :username, :password, :password_confirmation)
+    end
 
 end
