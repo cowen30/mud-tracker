@@ -6,7 +6,7 @@
                     <tr>
                         <th>First Name</th>
                         <th>Last Name</th>
-                        <th>Username</th>
+                        <th>Email</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -14,7 +14,7 @@
                     <tr class="table-row clickable-row" data-href="<%= user_path(user) %>">
                         <td><%= user.first_name %></td>
                         <td><%= user.last_name %></td>
-                        <td><%= user.username %></td>
+                        <td><%= user.email %></td>
                     </tr>
                   <% end %>
                 </tbody>
