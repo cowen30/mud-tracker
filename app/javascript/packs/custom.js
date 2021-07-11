@@ -125,8 +125,13 @@ $(document).on('turbolinks:load', () => {
         $(event.currentTarget).parent().siblings().children('.brand-logo').removeClass(['border', 'border-secondary']);
     });
 
-    $('.event-filter-year').on('click', () => {
+    $('.event-filter-year').on('click', (event) => {
         let selectedYears = '';
+        if ($(event.currentTarget).val() === '') {
+            $('.event-filter-year:not(:first)').removeClass('active');
+        } else {
+            $('.event-filter-year:first').removeClass('active');
+        }
         if ($('.event-filter-year.active').length > 0) {
             selectedYears = $('.event-filter-year.active:first').val();
         }
@@ -136,8 +141,13 @@ $(document).on('turbolinks:load', () => {
         filterTableByValue('#events-table', 2, selectedYears);
     });
 
-    $('.event-filter-brand').on('click', () => {
+    $('.event-filter-brand').on('click', (event) => {
         let selectedBrands = '';
+        if ($(event.currentTarget).val() === '') {
+            $('.event-filter-brand:not(:first)').removeClass('active');
+        } else {
+            $('.event-filter-brand:first').removeClass('active');
+        }
         if ($('.event-filter-brand.active').length > 0) {
             selectedBrands = $('.event-filter-brand.active:first').val();
         }
