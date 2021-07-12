@@ -66,6 +66,9 @@ class UsersController < ApplicationController
         @user = User.find(params[:id])
         if @user.active
             @participants = Participant.includes(event_detail: %i[event event_type]).where(user_id: params[:id]).order(Arel.sql('events.date DESC'), Arel.sql('participants.participation_day DESC'), Arel.sql('event_types.display_order ASC'))
+            @tm_legionnaire = helpers.get_legionnaire_count(@user)
+            @distance = helpers.get_total_distance(@user)
+            @elevation = helpers.get_total_elevation(@user)
             @new_participant = Participant.new
             @new_participant.event_detail = EventDetail.new
             @events = Event.where(archived: false).order(date: :desc)

@@ -1,0 +1,11 @@
+<div class="row mt-3 bg-light py-2 px-3">
+    <div class="col-6 col-md-4">
+        <small><strong>Lifetime Distance:</strong> <%= number_with_precision(@distance, :precision => 0, :delimiter => ',') %> miles</small>
+    </div>
+    <div class="col-6 col-md-4">
+        <small><strong>Lifetime Elevation:</strong> <%= number_with_precision(@elevation, :precision => 0, :delimiter => ',') %></small>
+    </div>
+    <div class="d-none d-md-block col-md-4">
+        <small><strong>TM Legionnaire:</strong> <%= @tm_legionnaire %>x</small>
+    </div>
+</div>
