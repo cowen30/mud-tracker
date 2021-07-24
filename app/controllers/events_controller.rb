@@ -19,19 +19,6 @@ class EventsController < ApplicationController
     end
   end
 
-  def show
-    @event = Event.find(params[:id])
-    @can_edit_event = helpers.can_edit_event(@event)
-    @event_details = EventDetail.where(event_id: params[:id])
-    @participants = Participant.includes(:event_detail).where(event_detail: { event_id: params[:id] })
-    if logged_in?
-      @user_list = User.where(id: current_user.id)
-      @event_types = EventType.where(brand_id: @event.brand_id).order(display_order: :asc)
-    end
-    @new_participant = Participant.new
-    @new_participant.event_detail = EventDetail.new
-  end
-
     def show
         @event = Event.find(params[:id])
         @can_edit_event = helpers.can_edit_event(@event)
