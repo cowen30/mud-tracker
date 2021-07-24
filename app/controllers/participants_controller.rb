@@ -7,6 +7,7 @@ class ParticipantsController < ApplicationController
             puts @participant.inspect
             render json: @participant.as_json(include: [ { event_detail: { include: [:event, :event_type] } }, :user ])
         else
+            puts @participant.errors.full_messages
             render :'common/error'
         end
     end
@@ -31,7 +32,7 @@ class ParticipantsController < ApplicationController
     private
 
     def participant_params
-        params.require(:participant).permit(:id, :user_id, { event_detail_attributes: %i[event_id event_type_id] }, :participation_day, :contender_status_id)
+        params.require(:participant).permit(:id, :user_id, { event_detail_attributes: %i[event event_type] }, :participation_day, :contender_status_id)
     end
 
 end

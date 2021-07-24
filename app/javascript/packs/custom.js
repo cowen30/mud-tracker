@@ -22,9 +22,9 @@ $(document).on('turbolinks:load', () => {
         }
         
         $('#participant_id').val(participantId);
-        $('#participant_event_detail_attributes_event_id').val($(event.relatedTarget).data('event'));
-        $('#participant_event_detail_attributes_event_type_id').val($(event.relatedTarget).data('type'));
-        const brandId = $('#participant_event_detail_attributes_event_id').find('option:selected').data('brand');
+        $('#participant_event_detail_attributes_event').val($(event.relatedTarget).data('event'));
+        $('#participant_event_detail_attributes_event_type').val($(event.relatedTarget).data('type'));
+        const brandId = $('#participant_event_detail_attributes_event').find('option:selected').data('brand');
         updateEventDropdown(brandId);
         updateEventTypeDropdown(brandId);
 
@@ -37,18 +37,18 @@ $(document).on('turbolinks:load', () => {
         }
     });
 
-    $('#participant_event_detail_attributes_event_id').on('change', (event) => {
+    $('#participant_event_detail_attributes_event').on('change', (event) => {
         const selectedBrand = $(event.currentTarget).find('option:selected').data('brand');
         updateEventTypeDropdown(selectedBrand);
     });
 
-    $('#participant_event_detail_attributes_event_type_id').on('change', (event) => {
+    $('#participant_event_detail_attributes_event_type').on('change', (event) => {
         const selectedBrand = $(event.currentTarget).find('option:selected').data('brand');
         updateEventDropdown(selectedBrand);
     });
 
     $('#delete-participant').on('click', (event) => {
-        const participantId = $('#participant_participant_id').val();
+        const participantId = $('#participant_id').val();
         $.ajax({
             method: 'DELETE',
             url: '/participants/' + participantId
@@ -191,7 +191,7 @@ const addAttributesToRow = (row, attrs) => {
 }
 
 const updateEventDropdown = (brandId) => {
-    $('#participant_event_detail_attributes_event_id option:not(:first)').each((_, element) => {
+    $('#participant_event_detail_attributes_event option:not(:first)').each((_, element) => {
         if (brandId == undefined) {
             $(element).removeClass('d-none');
         } else {
@@ -201,7 +201,7 @@ const updateEventDropdown = (brandId) => {
 }
 
 const updateEventTypeDropdown = (brandId) => {
-    $('#participant_event_detail_attributes_event_type_id option:not(:first)').each((_, element) => {
+    $('#participant_event_detail_attributes_event_type option:not(:first)').each((_, element) => {
         if (brandId == undefined) {
             $(element).removeClass('d-none');
         } else {
