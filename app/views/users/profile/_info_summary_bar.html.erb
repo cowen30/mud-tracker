@@ -16,12 +16,15 @@
                 <small><strong>TM Legionnaire:</strong> <%= @tm_legionnaire %>x</small>
             </div>
             <div class="d-none d-lg-block col-lg-2">
-                <small><strong>Volunteer hours:</strong> 0</small>
+                <small><strong>Volunteer hours:</strong> ...</small>
             </div>
         </div>
         <div id="profile-stats" class="row">
             <div class="col-12 text-center mb-0">
-                <div class="collapse" id="collapse-stats">
+                <div class="collapse row text-start px-3" id="collapse-stats">
+                    <div class="d-lg-none col-6">
+                        <small><strong>Volunteer hours:</strong> ...</small>
+                    </div>
                 </div>
                 <button class="btn w-100 collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse-stats" aria-expanded="false" aria-controls="collapse-stats">
                     <i class="bi bi-chevron-compact-down h3"></i>
