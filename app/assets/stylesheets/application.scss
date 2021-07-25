@@ -38,3 +38,32 @@
         padding: 0 10px;
     }
 }
+
+table.dataTable thead .sorting::before,
+table.dataTable thead .sorting_asc::before {
+    content: ""!important;
+}
+
+table.dataTable thead .sorting_desc::before {
+    content: ""!important;
+}
+
+table.dataTable thead .sorting::after {
+    font-family: "Font Awesome 5 Free";
+    font-weight: 900;
+    content: "\f0dc"!important;
+}
+
+table.dataTable thead .sorting_asc::after {
+    font-family: "Font Awesome 5 Free";
+    font-weight: 900;
+    content: "\f0de"!important;
+    opacity: 1!important;
+}
+
+table.dataTable thead .sorting_desc::after {
+    font-family: "Font Awesome 5 Free";
+    font-weight: 900;
+    content: "\f0dd"!important;
+    opacity: 1!important;
+}

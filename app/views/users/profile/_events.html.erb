@@ -13,8 +13,8 @@
 </div>
 <% end %>
 <div class="row pt-3">
-    <div class="col-12 col-xl-10 mx-auto table-responsive pt-2">
-        <table id="participant-table" class="table table-striped table-hover data-table">
+    <div class="col-12 col-xl-10 mx-auto pt-2">
+        <table id="participant-table" class="table table-sm table-striped table-hover data-table w-100" style="font-size: 14px;">
             <thead>
                 <tr>
                     <th>Event Name</th>
@@ -27,7 +27,10 @@
                 <tr class="table-row" data-bs-toggle="modal" data-bs-target="#participantModal" data-participant="<%= participant.id %>" data-event="<%= participant.event_detail.event_id %>" data-type="<%= participant.event_detail.event_type_id %>" data-day="<%= participant.participation_day %>">
                     <td><%= participant.event_detail.event.name %></td>
                     <td><%= participant.event_detail.event_type.name %></td>
-                    <td><%= participant.participation_day %></td>
+                    <td>
+                        <span class="d-none d-md-block"><%= participant.participation_day %></span>
+                        <span class="d-md-none"><%= "#{participant.participation_day.first(3)}." rescue nil %></span>
+                    </td>
                 </tr>
             <% end %>
             </tbody>
