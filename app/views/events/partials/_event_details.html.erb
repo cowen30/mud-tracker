@@ -1,7 +1,7 @@
-<div class="row pt-3 row-cols-1 row-cols-sm-2 row-cols-md-1 row-cols-lg-2 row-cols-xl-3">
+<div class="row pt-3 row-cols-1 row-cols-sm-2 row-cols-lg-2 row-cols-xl-3">
     <% @event_details.each do |detail| %>
     <div class="col mb-4">
-        <div class="card h-100">
+        <%= form_with model: detail, class: 'card h-100 event-detail-form', namespace: detail.id do |form| %>
             <div class="loading-div position-absolute h-100 bg-secondary justify-content-center d-none" style="z-index:999;opacity:.7;width:100%;">
                 <div class="spinner-container h-100 align-items-center d-none">
                     <div class="spinner-border text-danger" role="status">
@@ -15,18 +15,19 @@
                 </div>
             </div>
             <div class="card-body">
-                <input class="d-none" name="event-id" value="<%= @event.id %>">
+                <%= form.text_field :event_id, value: @event.id, class: 'd-none' %>
+                <%= form.text_field :event_type_id, value: detail.event_type.id, class: 'd-none' %>
                 <div class="row">
-                    <input id="event-type-<%= detail.event_type.id %>" type="text" readonly class="form-control-plaintext card-title h5 text-center col-12" value="<%= detail.event_type.name %>">
+                    <div class="form-control-plaintext card-title h5 text-center col-12"><%= detail.event_type.name %></div>
                 </div>
                 <div class="row gy-2">
                     <label class="col-8 form-label" for="lap-distance">Lap Distance (mi.)</label>
                     <div class="col-4">
-                        <%= number_field_tag :lap_distance, detail.lap_distance, { disabled: !logged_in?, class: 'form-control form-control-sm', inputmode: 'decimal', min: 0 } %>
+                        <%= form.number_field :lap_distance, value: detail.lap_distance, disabled: !logged_in?, class: 'form-control form-control-sm', inputmode: 'decimal', min: 0 %>
                     </div>
                     <label class="col-8 form-label" for="lap-elevation">Lap Elevation (ft.)</label>
                     <div class="col-4">
-                        <%= number_field_tag :lap_elevation, detail.lap_elevation, { disabled: !logged_in?, class: 'form-control form-control-sm', inputmode: 'decimal', min: 0 } %>
+                        <%= form.number_field :lap_elevation, value: detail.lap_elevation, disabled: !logged_in?, class: 'form-control form-control-sm', inputmode: 'decimal', min: 0 %>
                     </div>
                 </div>
             </div>
@@ -34,17 +35,17 @@
             <div class="card-footer">
                 <div class="row d-flex justify-content-center mb-0">
                     <div class="col-6 d-grid">
-                        <%= button_tag 'Save', type: 'button', class: 'btn btn-primary btn-sm event-type-save', disabled: @event.archived %>
+                        <%= form.button 'Save', type: 'button', class: 'btn btn-primary btn-sm event-type-save', disabled: @event.archived, data: { event_detail_id: detail.id } %>
                     </div>
                     <% unless @event.archived %>
                     <div class="col-6 d-grid">
-                        <%= button_tag 'Delete', type: 'button', class: 'btn btn-danger btn-sm event-type-delete' %>
+                        <%= form.button 'Delete', type: 'button', class: 'btn btn-danger btn-sm event-type-delete' %>
                     </div>
                     <% end %>
                 </div>
             </div>
             <% end %>
-        </div>
+        <% end %>
     </div>
     <% end %>
     <% if logged_in? %>

@@ -156,6 +156,41 @@ $(document).on('turbolinks:load', () => {
         });
         filterTableByValue('#events-table', 0, selectedBrands);
     });
+
+    $('.event-type-save').on('click', (event) => {
+        const eventDetailId = $(event.currentTarget).data('event-detail-id');
+
+        const card = $($(event.currentTarget).parents('.card')[0]);
+        const spinnerDiv = card.find('.spinner-container');
+        const loadingDiv = card.find('.loading-div');
+        const savedDiv = card.find('.saved');
+
+        loadingDiv.removeClass('d-none').addClass('d-flex');
+        spinnerDiv.removeClass('d-none').addClass('d-flex');
+
+        $.ajax({
+            type: 'PATCH',
+            url: '/event-details/' + eventDetailId,
+            data: $($(event.currentTarget).parents('form')[0]).serialize()
+        }).done((data) => {
+            console.log(data);
+            spinnerDiv.removeClass('d-flex').addClass('d-none');
+            savedDiv.removeClass('d-none').addClass('d-flex');
+
+            loadingDiv.animate({
+                opacity: 0
+            }, 3000, function() {
+                loadingDiv.removeClass('d-flex').addClass('d-none');
+                loadingDiv.css({opacity: 0.7});
+            });
+            savedDiv.animate({
+                opacity: 0
+            }, 3000, function() {
+                savedDiv.removeClass('d-flex').addClass('d-none');
+                savedDiv.css({opacity: 1});
+            });
+        });
+    });
 });
 
 const getTableParams = (options) => {
