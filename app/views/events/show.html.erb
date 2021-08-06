@@ -1,9 +1,23 @@
+<%
+    breadcrumb_items = [
+        {
+            :url => '/events',
+            :text => 'Events'
+        },
+        {
+            :text => @event.name
+        }
+    ]
+%>
+<%= render partial: 'common/breadcrumb', locals: { items: breadcrumb_items } %>
 <div class="row">
     <div class="col-12">
-        <h3><%= @event.name %></h3>
-        <% if @can_edit_event %>
-        <p><%= link_to "Edit", edit_event_path(@event) %></p>
-        <% end %>
+        <p>
+            <span class="h3"><%= @event.name %></span>
+            <% if @can_edit_event %>
+            <span class="ps-3"><%= link_to "Edit", edit_event_path(@event) %></span>
+            <% end %>
+        </p>
     </div>
 </div>
 <div class="row pt-3">

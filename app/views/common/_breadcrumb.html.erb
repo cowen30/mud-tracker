@@ -1,0 +1,15 @@
+<div class="row pt-2">
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <%
+                items.each do |item|
+                    if item[:url].nil?
+            %>
+            <li class="breadcrumb-item active" aria-current="page"><%= item[:text] %></li>
+                <% else %>
+            <li class="breadcrumb-item"><a href="<%= item[:url] %>"><%= item[:text] %></a></li>
+                <% end %>
+            <% end %>
+        </ol>
+    </nav>
+</div>
