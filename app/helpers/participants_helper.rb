@@ -1,7 +1,7 @@
 module ParticipantsHelper
 
     def get_legionnaire_count(user)
-        Participant.joins(:event_detail).where(user: user, event_details: { event_type_id: [1, 3, 7] }).distinct.count
+        Participant.joins(:event_detail).where(user: user, event_details: { event_type_id: [1, 3, 7, 8, 11, 12] }).distinct.count
     end
 
     def get_total_distance(user)
