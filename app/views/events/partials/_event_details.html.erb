@@ -1,7 +1,7 @@
 <div class="row pt-3 row-cols-1 row-cols-sm-2 row-cols-lg-2 row-cols-xl-3">
     <% @event_details.each do |detail| %>
     <div class="col mb-4">
-        <%= form_with model: detail, class: 'card h-100 event-detail-form', namespace: detail.id do |form| %>
+        <%= form_with model: detail, id: "event-detail-#{detail.id}", class: 'card h-100 event-detail-form', namespace: detail.id do |form| %>
             <div class="loading-div position-absolute h-100 bg-secondary justify-content-center d-none" style="z-index:999;opacity:.7;width:100%;">
                 <div class="spinner-container h-100 align-items-center d-none">
                     <div class="spinner-border text-danger" role="status">
@@ -21,25 +21,25 @@
                     <div class="form-control-plaintext card-title h5 text-center col-12"><%= detail.event_type.name %></div>
                 </div>
                 <div class="row gy-2">
-                    <label class="col-8 form-label" for="lap-distance">Lap Distance (mi.)</label>
+                    <%= form.label :lap_distance, 'Lap Distance (mi.)', { class: 'col-8 form-label' } %>
                     <div class="col-4">
                         <%= form.number_field :lap_distance, value: detail.lap_distance, disabled: !logged_in?, class: 'form-control form-control-sm', inputmode: 'decimal', min: 0 %>
                     </div>
-                    <label class="col-8 form-label" for="lap-elevation">Lap Elevation (ft.)</label>
+                    <%= form.label :lap_elevation, 'Lap Elevation (ft.)', { class: 'col-8 form-label' } %>
                     <div class="col-4">
                         <%= form.number_field :lap_elevation, value: detail.lap_elevation, disabled: !logged_in?, class: 'form-control form-control-sm', inputmode: 'decimal', min: 0 %>
                     </div>
                 </div>
             </div>
             <% if logged_in? %>
-            <div class="card-footer">
+            <div class="card-footer" data-event-detail-id="<%= detail.id %>">
                 <div class="row d-flex justify-content-center mb-0">
                     <div class="col-6 d-grid">
-                        <%= form.button 'Save', type: 'button', class: 'btn btn-primary btn-sm event-type-save', disabled: @event.archived, data: { event_detail_id: detail.id } %>
+                        <%= form.button 'Save', type: 'button', class: 'btn btn-primary btn-sm event-type-save', disabled: @event.archived %>
                     </div>
                     <% unless @event.archived %>
                     <div class="col-6 d-grid">
-                        <%= form.button 'Delete', type: 'button', class: 'btn btn-danger btn-sm event-type-delete' %>
+                        <%= form.button 'Delete', type: 'button', class: 'btn btn-danger btn-sm event-type-delete', data: { bs_toggle: 'modal', bs_target: '#deleteModal' } %>
                     </div>
                     <% end %>
                 </div>
@@ -66,7 +66,7 @@
         </div>
         <% end %>
         <div id="event-type-template" class="col mb-4 d-none">
-            <div class="card h-100">
+            <%= form_with model: @new_event_detail, class: 'card h-100 event-detail-form', namespace: @new_event_detail.id do |form| %>
                 <div class="loading-div position-absolute h-100 bg-secondary justify-content-center d-none" style="z-index:999;opacity:.7;width:100%;">
                     <div class="spinner-container h-100 align-items-center d-none">
                         <div class="spinner-border text-danger" role="status">
@@ -80,23 +80,16 @@
                     </div>
                 </div>
                 <div class="card-body">
-                    <input class="d-none" name="event-id" value="<%= @event.id %>">
+                    <%= form.text_field :event_id, value: @event.id, class: 'd-none' %>
                     <div class="row">
                         <div class="col-12">
-                            <select class="form-select form-select-sm" id="event-type" name="event-type">
-                                <option value="">Select...</option>
-                                <%
-                                    EventType.order(display_order: :asc).each do |type|
-                                %>
-                                <option value=<%= type.id %>><%= type.name %></option>
-                                <% end %>
-                            </select>
+                            <%= form.collection_select :event_type, @event_types, :id, :name, { prompt: 'Select...' }, { class: 'form-select form-select-sm' } %>
                         </div>
                     </div>
                     <div class="row gy-2 pt-3">
-                        <label class="col-8 form-label" for="lap-distance">Lap Distance (mi.)</label>
+                        <%= form.label :lap_distance, 'Lap Distance (mi.)', { class: 'col-8 form-label' } %>
                         <div class="col-4">
-                            <input type="number" inputmode="decimal" id="lap-distance" class="form-control form-control-sm" name="lap-distance">
+                            <%= form.number_field :lap_distance, class: 'form-control form-control-sm', inputmode: 'decimal', min: 0 %>
                         </div>
                         <label class="col-8 form-label" for="lap-elevation">Lap Elevation (ft.)</label>
                         <div class="col-4">
@@ -114,12 +107,39 @@
                         </div>
                         <% unless @event.archived %>
                         <div class="col-6 d-grid d-none">
-                            <button type="button" class="btn btn-danger btn-sm event-type-delete">Delete</button>
+                            <button type="button" class="btn btn-danger btn-sm event-type-delete" data-bs-toggle="modal" data-bs-target="#deleteModal">Delete</button>
                         </div>
                         <% end %>
                     </div>
                 </div>
-            </div>
+            <% end %>
         </div>
     <% end %>
+</div>
+
+<div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="deleteModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="deleteModalLabel">Delete Event Type</h5>
+                <%= dismiss_modal_tag %>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-12">
+                        <p>Are you sure you want to delete <span id="event-type-name"></span> from <%= @event.name %>?</p>
+                        <p>This will delete <span id="event-type-participants"></span> participants from this event.</p>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <div class="row justify-content-end">
+                    <div class="col-auto d-flex gap-2">
+                        <button id="delete-event-type-confirm" class="btn btn-danger text-white">Delete</a>
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>

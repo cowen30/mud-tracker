@@ -157,8 +157,19 @@ $(document).on('turbolinks:load', () => {
         filterTableByValue('#events-table', 0, selectedBrands);
     });
 
+    $('#add-event-type .card').on('click', (event) => {
+        var template = $('#event-type-template').clone(true);
+        template.removeAttr('id');
+        template.removeClass('d-none');
+        template.insertBefore($(event.currentTarget).parent());
+    });
+
+    $('.event-type-cancel').on('click', (event) => {
+        $($(event.currentTarget).parents('.card')[0]).parent().remove();
+    });
+
     $('.event-type-save').on('click', (event) => {
-        const eventDetailId = $(event.currentTarget).data('event-detail-id');
+        const eventDetailId = $($(event.currentTarget).parents('.card-footer')[0]).data('event-detail-id');
 
         const card = $($(event.currentTarget).parents('.card')[0]);
         const spinnerDiv = card.find('.spinner-container');
@@ -173,7 +184,6 @@ $(document).on('turbolinks:load', () => {
             url: '/event-details/' + eventDetailId,
             data: $($(event.currentTarget).parents('form')[0]).serialize()
         }).done((data) => {
-            console.log(data);
             spinnerDiv.removeClass('d-flex').addClass('d-none');
             savedDiv.removeClass('d-none').addClass('d-flex');
 
@@ -189,8 +199,37 @@ $(document).on('turbolinks:load', () => {
                 savedDiv.removeClass('d-flex').addClass('d-none');
                 savedDiv.css({opacity: 1});
             });
+        }).fail(() => {
+            spinnerDiv.removeClass('d-flex').addClass('d-none');
+            loadingDiv.removeClass('d-flex').addClass('d-none');
+            showError();
         });
     });
+
+    $('.event-type-delete').on('click', (event) => {
+        const eventDetailId = $($(event.currentTarget).parents('.card-footer')[0]).data('event-detail-id');
+        $.ajax({
+            type: 'GET',
+            url: '/event-details/' + eventDetailId
+        }).done((data) => {
+            $('#event-type-name').text(data.event_type.name);
+            $('#event-type-participants').text(data.participants);
+            $('#delete-event-type-confirm').data('event-detail-id', eventDetailId);
+            $('#deleteModal').modal('show');
+        });
+    });
+
+    $('#delete-event-type-confirm').on('click', (event) => {
+        const eventDetailId = $(event.currentTarget).data('event-detail-id');
+
+        $.ajax({
+            type: 'DELETE',
+            url: '/event-details/' + eventDetailId
+        }).done(() => {
+            $('#deleteModal').modal('hide');
+            $('#event-detail-' + eventDetailId).parent().remove();
+        });
+    })
 });
 
 const getTableParams = (options) => {
@@ -315,4 +354,8 @@ const validatePasswordSpecialChars = (pwd) => {
 
 const validatePasswordConfirmation = (pwd, pwdConfirm) => {
     return (pwd === pwdConfirm);
+}
+
+const showError = () => {
+    $('#errorModal').modal('show');
 }

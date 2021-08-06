@@ -11,6 +11,12 @@ class EventDetailsController < ApplicationController
         end
     end
 
+    def show
+        @event_detail = EventDetail.find(params[:id])
+        @participants = Participant.where(event_detail: @event_detail)
+        render json: @event_detail.as_json(include: [{ updated_by: { only: %i[id first_name last_name] } }, :event_type]).merge(participants: @participants.count)
+    end
+
     def update
         @event_detail = EventDetail.find(params[:id])
         @event_detail.updated_by = current_user
@@ -18,18 +24,19 @@ class EventDetailsController < ApplicationController
             render json: @event_detail.as_json(include: { updated_by: { only: %i[id first_name last_name] } })
         else
             render json: {
-                status: :internal_server_error,
                 message: 'Error'
-            }.to_json
+            }, status: :internal_server_error
         end
     end
 
     def destroy
         @event_detail = EventDetail.find(params[:id])
         if @event_detail.destroy
-            redirect_to '/'
+            render json: {}, status: :no_content
         else
-            render :'common/error'
+            render json: {
+                message: 'Error'
+            }, status: :internal_server_error
         end
     end
 

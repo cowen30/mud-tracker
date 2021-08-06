@@ -10,3 +10,9 @@
 .brand-logo.border:hover {
     border: 1px solid #6c757d!important;
 }
+
+#add-event-type .card:hover {
+    cursor: pointer;
+    color: #ff6600;
+    background-color: lightgray;
+}
