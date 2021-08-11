@@ -26,7 +26,10 @@
             <% @participants.each do |participant| %>
                 <tr class="<%= @can_edit_event ? 'table-row' : nil %>" data-bs-toggle="modal" data-bs-target="#participantModal" data-participant="<%= participant.id %>" data-name="<%= participant.user.id %>" data-event="<%= participant.event_detail.event_id %>" data-type="<%= participant.event_detail.event_type_id %>" data-day="<%= participant.participation_day %>" data-laps="<%= participant.additional_laps %>">
                     <td><%= participant.user.full_name %></td>
-                    <td><%= participant.event_detail.event_type.name %></td>
+                    <td>
+                        <span class="d-none d-md-inline-block"><%= participant.event_detail.event_type.name %></span>
+                        <span class="d-md-none"><%= participant.event_detail.event_type.short_name %></span>
+                    </td>
                     <td>
                         <span class="d-none d-md-inline-block"><%= participant.participation_day %></span>
                         <span class="d-md-none"><%= "#{participant.participation_day.first(3)}." rescue nil %></span>

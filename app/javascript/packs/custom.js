@@ -62,7 +62,7 @@ $(document).on('turbolinks:load', () => {
                 table.row(participantRow).remove().draw();
             });
         }).fail(() => {
-            alert('Error!');
+            showError();
         });
     });
 
@@ -125,7 +125,7 @@ $(document).on('turbolinks:load', () => {
                 'data-laps': data.additional_laps
             });
         }).fail(() => {
-            alert('Error!');
+            showError();
         });
     });
 
