@@ -24,18 +24,27 @@
             </thead>
             <tbody>
             <% @participants.each do |participant| %>
-                <tr class="table-row" data-bs-toggle="modal" data-bs-target="#participantModal" data-participant="<%= participant.id %>" data-event="<%= participant.event_detail.event_id %>" data-type="<%= participant.event_detail.event_type_id %>" data-day="<%= participant.participation_day %>">
+                <tr class="table-row" data-bs-toggle="modal" data-bs-target="#participantModal" data-participant="<%= participant.id %>" data-event="<%= participant.event_detail.event_id %>" data-type="<%= participant.event_detail.event_type_id %>" data-day="<%= participant.participation_day %>" data-laps="<%= participant.additional_laps %>">
                     <td><%= participant.event_detail.event.name %></td>
                     <td><%= participant.event_detail.event_type.name %></td>
                     <td>
-                        <span class="d-none d-md-block"><%= participant.participation_day %></span>
+                        <span class="d-none d-md-inline-block"><%= participant.participation_day %></span>
                         <span class="d-md-none"><%= "#{participant.participation_day.first(3)}." rescue nil %></span>
+                        <% if participant.additional_laps %>
+                        (+<%= participant.additional_laps %>)
+                        <% end %>
                     </td>
                 </tr>
             <% end %>
             </tbody>
         </table>
     </div>
+</div>
+
+<div id="participation-day-template" class="d-none">
+    <span class="d-none d-md-inline-block day-long"></span>
+    <span class="d-md-none day-short"></span>
+    <span class="additional-laps"></span>
 </div>
 
 <% if @user.active %>
@@ -72,6 +81,10 @@
                                 <%= form.radio_button :participation_day, 'Sunday', { class: 'form-check-input' } %>
                                 <%= form.label :participation_day_sunday, 'Sunday', { class: 'form-check-label' } %>
                             </div>
+                        </div>
+                        <%= form.label :additional_laps, 'Additional Laps', { class: 'col-4 col-form-label' } %>
+                        <div class="col-3">
+                            <%= form.number_field :additional_laps, value: @new_participant.additional_laps, class: 'form-control' %>
                         </div>
                     </div>
                 </div>

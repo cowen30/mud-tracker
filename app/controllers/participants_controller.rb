@@ -32,7 +32,7 @@ class ParticipantsController < ApplicationController
     private
 
     def participant_params
-        params.require(:participant).permit(:id, :user_id, { event_detail_attributes: %i[event event_type] }, :participation_day, :contender_status_id)
+        params.require(:participant).permit(:id, :user_id, { event_detail_attributes: %i[event event_type] }, :participation_day, :additional_laps, :contender_status_id)
     end
 
 end

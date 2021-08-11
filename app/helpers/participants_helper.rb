@@ -5,7 +5,9 @@ module ParticipantsHelper
     end
 
     def get_total_distance(user)
-        Participant.where(user: user).includes(:event_detail).joins(:event_detail).sum(:lap_distance)
+        base_distance = Participant.where(user: user).includes(:event_detail).joins(:event_detail).where.not(event_details: { event_type_id: [7, 8, 12] }).sum(:lap_distance)
+        base_distance += Participant.where(user: user).where('additional_laps >= 1').includes(:event_detail).joins(:event_detail).where.not(event_details: { event_type_id: [7, 8, 12] }).sum('event_details.lap_distance * participants.additional_laps')
+        base_distance
     end
 
     def get_total_elevation(user)

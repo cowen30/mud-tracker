@@ -12,7 +12,7 @@ $(document).on('turbolinks:load', () => {
     $('.data-table').DataTable(getTableParams({'search': false}));
 
     $('#participantModal').on('show.bs.modal', (event) => {
-        const participantId = $(event.relatedTarget).data('participant');
+        const participantId = $(event.relatedTarget).attr('data-participant');
         if (participantId == undefined) {
             $('#delete-participant').addClass('d-none');
             $('#participant-modal-label').text('Add');
@@ -22,19 +22,21 @@ $(document).on('turbolinks:load', () => {
         }
         
         $('#participant_id').val(participantId);
-        $('#participant_event_detail_attributes_event').val($(event.relatedTarget).data('event'));
-        $('#participant_event_detail_attributes_event_type').val($(event.relatedTarget).data('type'));
+        $('#participant_event_detail_attributes_event').val($(event.relatedTarget).attr('data-event'));
+        $('#participant_event_detail_attributes_event_type').val($(event.relatedTarget).attr('data-type'));
         const brandId = $('#participant_event_detail_attributes_event').find('option:selected').data('brand');
         updateEventDropdown(brandId);
         updateEventTypeDropdown(brandId);
 
-        const race_day = $(event.relatedTarget).data('day');
+        const race_day = $(event.relatedTarget).attr('data-day');
         if (race_day == undefined || race_day == '') {
             $('input[name="participant[participation_day]"][value="Saturday"]').prop('checked', false);
             $('input[name="participant[participation_day]"][value="Sunday"]').prop('checked', false);
         } else {
             $('input[name="participant[participation_day]"][value="' + race_day + '"]').prop('checked', true);
         }
+
+        $('#participant_additional_laps').val($(event.relatedTarget).attr('data-laps'));
     });
 
     $('#participant_event_detail_attributes_event').on('change', (event) => {
@@ -87,10 +89,19 @@ $(document).on('turbolinks:load', () => {
             }
 
             let row = undefined;
+            const participationDay = data.participation_day;
+
+            const participationDayDiv = $('#participation-day-template').clone();
+            participationDayDiv.removeAttr('id').removeClass('d-none');
+            participationDayDiv.find('.day-long').text(participationDay);
+            participationDayDiv.find('.day-short').text(participationDay.substring(0,3) + '.');
+            if (data.additional_laps != undefined && data.additional_laps > 0) {
+                participationDayDiv.find('.additional-laps').text(' (+' + data.additional_laps + ')')
+            }
             const rowData = [
                 firstColumnData,
                 data.event_detail.event_type.name,
-                data.participation_day
+                null
             ];
 
             if (participantId == '') {
@@ -100,6 +111,8 @@ $(document).on('turbolinks:load', () => {
                 const rowIndex = $('#participant-table tr[data-participant=' + participantId + ']').index();
                 row = editRowInTable('#participant-table', rowIndex, rowData);
             }
+
+            $(row).find('td:last-child').append(participationDayDiv);
     
             addAttributesToRow(row, {
                 'data-bs-toggle': 'modal',
@@ -108,7 +121,8 @@ $(document).on('turbolinks:load', () => {
                 'data-event': data.event_detail.event_id,
                 'data-user': data.user_id,
                 'data-type': data.event_detail.event_type_id,
-                'data-day': data.participation_day
+                'data-day': data.participation_day,
+                'data-laps': data.additional_laps
             });
         }).fail(() => {
             alert('Error!');
