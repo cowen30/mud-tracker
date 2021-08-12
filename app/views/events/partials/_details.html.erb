@@ -1,22 +1,22 @@
 <dl class="row">
-    <dt class="col-2 text-end">Event Name</dt>
-    <dd class="col-10"><%= @event.name %></dd>
+    <dt class="col-4 text-end">Event Name</dt>
+    <dd class="col-8"><%= @event.name %></dd>
 
-    <dt class="col-2 text-end">Date</dt>
-    <dd class="col-10"><%= @event.date %></dd>
+    <dt class="col-4 text-end">Date</dt>
+    <dd class="col-8"><%= @event.date.strftime('%b %-d, %Y') %></dd>
 
-    <dt class="col-2 text-end">Address</dt>
-    <dd class="col-10"><%= @event.address %></dd>
+    <dt class="col-4 text-end">Address</dt>
+    <dd class="col-8"><%= @event.address %></dd>
 
-    <dt class="col-2 text-end">City</dt>
-    <dd class="col-10"><%= @event.city %></dd>
+    <dt class="col-4 text-end">City</dt>
+    <dd class="col-8"><%= @event.city %></dd>
 
-    <dt class="col-2 text-end">State</dt>
-    <dd class="col-10"><%= @event.state %></dd>
+    <dt class="col-4 text-end">State</dt>
+    <dd class="col-8"><%= @event.state %></dd>
 
-    <dt class="col-2 text-end">Country</dt>
-    <dd class="col-10"><%= @event.country %></dd>
+    <dt class="col-4 text-end">Country</dt>
+    <dd class="col-8"><%= @event.country %></dd>
 
-    <dt class="col-2 text-end">Brand</dt>
-    <dd class="col-10"><%= @event.brand.name %></dd>
+    <dt class="col-4 text-end">Brand</dt>
+    <dd class="col-8"><%= @event.brand.name %></dd>
 </dl>

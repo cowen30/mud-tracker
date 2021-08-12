@@ -1,48 +1,66 @@
-<div class="row">
-    <div class="col-12">
+<%
+    breadcrumb_items = [
+        {
+            url: events_path,
+            text: 'Events'
+        },
+        {
+            url: event_path(@event),
+            text: @event.name
+        },
+        {
+            text: 'Edit'
+        }
+    ]
+%>
+<%= render partial: 'common/breadcrumb', locals: { items: breadcrumb_items } %>
+<div class="row justify-content-center">
+    <div class="col-12 col-sm-10 col-md-8 col-lg-6 col-xl-4">
         <%= form_with model: @event do |form| %>
-            <div class="row pt-4">
-                <div class="col-12 col-sm-10 col-lg-8 col-xl-6 mx-auto">
-                    <div class="row gx-2">
-                        <div class="col-6">
-                            <%= form.submit 'Save', :disabled => @event.archived, :class => 'btn btn-primary btn-lg w-100' %>
-                        </div>
-                        <% if !@event.archived %>
-                        <div class="col-6">
-                            <button type="button" class="btn btn-danger btn-lg w-100" data-bs-toggle="modal" data-bs-target="#deleteEventModal">Remove Event</button>
-                        </div>
-                        <% end %>
-                    </div>
+            <div class="row pt-4 gx-2">
+                <div class="col-6">
+                    <%= form.submit 'Save', :disabled => @event.archived, :class => 'btn btn-primary btn-lg w-100' %>
                 </div>
+                <% if !@event.archived %>
+                <div class="col-6">
+                    <button type="button" class="btn btn-danger btn-lg w-100" data-bs-toggle="modal" data-bs-target="#deleteEventModal">Remove Event</button>
+                </div>
+                <% end %>
             </div>
             <fieldset <% if @event.archived %>disabled<% end %>>
                 <div class="row pt-4 gx-2 gy-3">
-                    <div class="col-12 col-sm-7 col-md-5">
+                    <div class="col-12">
                         <%= form.label :name, 'Event Name', { class: 'form-label' } %>
                         <%= form.text_field :name, { class: 'form-control' } %>
                     </div>
-                    <div class="col-6 col-md-4">
+                    <div class="col-12">
+                        <%= form.label :address, 'Address', { class: 'form-label' } %>
+                        <%= form.text_field :address, { class: 'form-control' } %>
+                    </div>
+                    <div class="col-6">
                         <%= form.label :city, 'City', { class: 'form-label' } %>
                         <%= form.text_field :city, { class: 'form-control' } %>
                     </div>
-                    <div class="col-3 col-md-1">
+                    <div class="col-3">
                         <%= form.label :state, 'State', { class: 'form-label' } %>
                         <%= form.select :state, Rails.configuration.state_list, { prompt: 'Select...' }, { class: 'form-select' } %>
                     </div>
-                    <div class="col-3 col-md-2">
+                    <div class="col-3">
                         <%= form.label :country, 'Country', { class: 'form-label' } %>
                         <%= form.select :country, Rails.configuration.country_list, { prompt: 'Select...' }, { class: 'form-select' } %>
                     </div>
-                    <div class="col-6 col-sm-4 col-md-3">
+                    <div class="col-6">
                         <%= form.label :date, 'Date', { class: 'form-label' } %>
                         <%= form.date_field :date, { class: 'form-control' } %>
                     </div>
                 </div>
             </fieldset>
         <% end %>
-    </div>
-    <div class="col-12">
-        <small>Last updated: <%= @event.updated_by.full_name %>, <%= @event.updated_at.strftime('%D %r') %></small>
+        <div class="row pt-3">
+            <div class="col-12">
+                <small>Last updated: <%= @event.updated_by.full_name %>, <%= @event.updated_at.strftime('%D %r') %></small>
+            </div>
+        </div>
     </div>
 </div>
 
