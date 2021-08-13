@@ -87,8 +87,14 @@
                                 </div>
                             </div>
                             <%= form.label :additional_laps, 'Additional Laps', { class: 'col-4 col-form-label' } %>
+                            <div class="col-1 position-relative counter-button counter-down">
+                                <i class="bi bi-dash-circle fs-5 fw-bold position-absolute top-50 start-50 translate-middle"></i>
+                            </div>
                             <div class="col-3">
-                                <%= form.number_field :additional_laps, value: @new_participant.additional_laps, class: 'form-control' %>
+                                <%= form.number_field :additional_laps, value: @new_participant.additional_laps, class: 'form-control', min: 0 %>
+                            </div>
+                            <div class="col-1 position-relative counter-button counter-up">
+                                <i class="bi bi-plus-circle fs-5 fw-bold position-absolute top-50 start-50 translate-middle"></i>
                             </div>
                         </div>
                     </fieldset>

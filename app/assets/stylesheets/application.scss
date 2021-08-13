@@ -67,3 +67,8 @@ table.dataTable thead .sorting_desc::after {
     content: "\f0dd"!important;
     opacity: 1!important;
 }
+
+.counter-button:hover {
+    color: #ff6600;
+    cursor: pointer;
+}

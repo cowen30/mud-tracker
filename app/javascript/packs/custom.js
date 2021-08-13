@@ -243,7 +243,27 @@ $(document).on('turbolinks:load', () => {
             $('#deleteModal').modal('hide');
             $('#event-detail-' + eventDetailId).parent().remove();
         });
-    })
+    });
+
+    $('.counter-button').on('click', (event) => {
+        let counterValue = $('#participant_additional_laps').val();
+        if ($(event.currentTarget).hasClass('counter-down')) {
+            if (counterValue > 0) {
+                counterValue--;
+            } else {
+                counterValue = 0;
+            }
+        } else {
+            counterValue++;
+        }
+        $('#participant_additional_laps').val(counterValue);
+    });
+
+    $('#participant_additional_laps').on('blur', (event) => {
+        if ($(event.currentTarget).val() < 0) {
+            $(event.currentTarget).val(0);
+        }
+    });
 });
 
 const getTableParams = (options) => {
