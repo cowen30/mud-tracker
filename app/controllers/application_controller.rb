@@ -3,6 +3,7 @@ class ApplicationController < ActionController::Base
     before_action :authorized
     helper_method :current_user
     helper_method :logged_in?
+    helper_method :admin?
 
     def current_user
         User.find_by(id: session[:user_id])
@@ -10,6 +11,10 @@ class ApplicationController < ActionController::Base
 
     def logged_in?
         !current_user.nil?
+    end
+
+    def admin?
+        !UserRole.find_by(user_id: session[:user_id], role_id: 1).nil?
     end
 
     def authorized

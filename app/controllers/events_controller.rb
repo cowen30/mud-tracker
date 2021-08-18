@@ -1,6 +1,12 @@
+# frozen_string_literal: true
+
 class EventsController < ApplicationController
 
-    skip_before_action :authorized, only: %i[index show]
+	skip_before_action :authorized, only: %i[index show]
+
+	def can_edit_event(event)
+		logged_in? && admin? && !event.archived
+	end
 
     def index
         @events = Event.where(archived: false).order(date: :desc)
@@ -39,14 +45,21 @@ class EventsController < ApplicationController
     @event = Event.find(params[:id])
   end
 
-  def update
-    @event = Event.find(params[:id])
-    if @event.update(event_params.merge(updated_by: current_user))
-      redirect_to @event
-    else
-      render :'common/error'
-    end
-  end
+	def update
+		@event = Event.find(params[:id])
+		unless can_edit_event(@event)
+			respond_to do |format|
+				format.html { render :'common/unauthorized' }
+				format.json { render json: { message: 'Insufficient privileges' }, status: :forbidden }
+			end && return
+		end
+
+		if @event.update(event_params.merge(updated_by: current_user))
+			redirect_to @event
+		else
+			render :'common/error'
+		end
+	end
 
   def destroy
     @event = Event.find(params[:id])
@@ -59,9 +72,10 @@ class EventsController < ApplicationController
     end
   end
 
-  private
-    def event_params
-      params.require(:event).permit(:name, :brand_id, :address, :city, :state, :country, :date)
-    end
+	private
+
+	def event_params
+		params.require(:event).permit(:name, :brand_id, :address, :city, :state, :country, :date)
+	end
 
 end
