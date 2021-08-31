@@ -9,6 +9,7 @@ Rails.application.routes.draw do
   resources :participants
 
   get 'verify-email', to: 'users#verify'
+  get 'resend-verification', to: 'users#resend_verification'
 
   get 'login', to: 'sessions#new'
   post 'login', to: 'sessions#create'

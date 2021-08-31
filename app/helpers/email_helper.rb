@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'mail'
 require 'google/apis/gmail_v1'
 require 'googleauth'
@@ -5,7 +7,7 @@ require 'securerandom'
 
 module EmailHelper
 
-    ADMIN_USER_ACCOUNT = 'admin@mudtrackr.com'
+	ADMIN_USER_ACCOUNT = 'admin@mudtrackr.com'
 
     def send_email(to_email, subject, body)
         m = Mail.new(
@@ -33,15 +35,21 @@ module EmailHelper
         end
     end
 
-    def send_welcome_email(user)
-        verification_code = SecureRandom.hex(16)
-        user.verification_code = verification_code
-        user.save
-        to_email = user.email
-        subject = 'Welcome to MudTrackr!'
-        body = "Welcome #{user.first_name}! Thank you for registering for an account on MudTrackr.<br/><br/>Please click the link below to verify your email.<br/><br/><a href=\"#{request.base_url}/verify-email?user_id=#{user.id}&verification_code=#{verification_code}\">Verify email</a>"
-        send_email(to_email, subject, body)
-    end
+	def send_welcome_email(user)
+		generate_verification_code(user)
+		to_email = user.email
+		subject = 'Welcome to MudTrackr!'
+		body = "Welcome #{user.first_name}! Thank you for registering for an account on MudTrackr.<br/><br/>Please click the link below to verify your email.<br/><br/><a href=\"#{request.base_url}/verify-email?user_id=#{user.id}&verification_code=#{verification_code}\">Verify email</a>"
+		send_email(to_email, subject, body)
+	end
+
+	def send_verification_email(user)
+		generate_verification_code(user)
+		to_email = user.email
+		subject = 'Verify account'
+		body = "Hello #{user.first_name}!<br/><br/>Please click the link below to verify your email.<br/><br/><a href=\"#{request.base_url}/verify-email?user_id=#{user.id}&verification_code=#{verification_code}\">Verify email</a>"
+		send_email(to_email, subject, body)
+	end
 
     def send_password_reset_email(user)
         reset_code = SecureRandom.hex(16)
@@ -52,5 +60,13 @@ module EmailHelper
         body = "Please click the link below to reset your password.<br/><br/><a href=\"#{request.base_url}/reset-password?user_id=#{user.id}&reset_code=#{reset_code}\">Reset Password</a>"
         send_email(to_email, subject, body)
     end
+
+	private
+
+	def generate_verification_code(user)
+		verification_code = SecureRandom.hex(16)
+		user.verification_code = verification_code
+		user.save
+	end
 
 end

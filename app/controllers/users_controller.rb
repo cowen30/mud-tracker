@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class UsersController < ApplicationController
 
     skip_before_action :authorized, only: %i[new create reset_load reset_confirm reset_save]
@@ -62,24 +64,32 @@ class UsersController < ApplicationController
         end
     end
 
-    def show
-        @user = User.find(params[:id])
-        if @user.active
-            @participants = Participant.includes(event_detail: %i[event event_type]).where(user_id: params[:id]).order(Arel.sql('events.date DESC'), Arel.sql('participants.participation_day DESC'), Arel.sql('event_types.display_order ASC'))
-            @tm_legionnaire = helpers.get_legionnaire_count(@user)
-            @distance = helpers.get_total_distance(@user)
-            @elevation = helpers.get_total_elevation(@user)
-            @new_participant = Participant.new
-            @new_participant.event_detail = EventDetail.new
-            @events = Event.where(archived: false).order(date: :desc)
-            @event_types = EventType.includes(:brand).order(Arel.sql('brands.id ASC'), display_order: :asc)
-            @active_tab = params['tab'].nil? ? 'details' : params['tab']
-        else
-            redirect_to '/'
-        end
-    end
+	def show
+		@user = User.find(params[:id])
+		@participants = Participant.includes(event_detail: %i[event event_type]).where(user_id: params[:id]).order(Arel.sql('events.date DESC'), Arel.sql('participants.participation_day DESC'), Arel.sql('event_types.display_order ASC'))
+		@tm_legionnaire = helpers.get_legionnaire_count(@user)
+		@distance = helpers.get_total_distance(@user)
+		@elevation = helpers.get_total_elevation(@user)
+		@new_participant = Participant.new
+		@new_participant.event_detail = EventDetail.new
+		@events = Event.where(archived: false).order(date: :desc)
+		@event_types = EventType.includes(:brand).order(Arel.sql('brands.id ASC'), display_order: :asc)
+		@active_tab = params['tab'].nil? ? 'details' : params['tab']
+	end
 
-    private
+	def resend_verification
+		@user = current_user
+		render json: { message: 'User is already verified' }, status: :no_content && return if @user.active
+
+		begin
+			helpers.send_welcome_email @user
+			render json: { message: 'Email sent', error: e }, status: :ok
+		rescue e
+			render json: { message: 'Unexpected error', error: e }, status: :internal_server_error
+		end
+	end
+
+	private
 
     def user_params
         params.require(:user).permit(:first_name, :last_name, :email, :password, :password_confirmation)

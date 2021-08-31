@@ -5,6 +5,10 @@ let passwordIsValid = false;
 $(document).on('turbolinks:load', () => {
     registerPasswordRequirementValidations();
 
+    $(window).on('load', () => {
+        $('#inactiveUserModal').modal('show');
+    });
+
     $('.clickable-row').on('click', (event) => {
         window.location = $(event.currentTarget).data('href');
     });
@@ -263,6 +267,21 @@ $(document).on('turbolinks:load', () => {
         if ($(event.currentTarget).val() < 0) {
             $(event.currentTarget).val(0);
         }
+    });
+
+    $('#resend-verification-email-button').on('click', () => {
+        $.ajax({
+            type: 'GET',
+            url: '/resend-verification'
+        }).done((_data, _textStatus, jqXHR) => {
+            if (jqXHR.status === 204) {
+                $('#inactiveUserModal').modal('hide');
+            } else {
+                $('#emailVerificationFeedback').removeClass('d-none');
+            }
+        }).fail(() => {
+            $('#emailVerificationFeedback p').text('An unexpected error has occurred. Please try again.');
+        });
     });
 });
 
