@@ -15,13 +15,31 @@ class UsersController < ApplicationController
         end
     end
 
-    def create
-        @user = User.new(user_params)
-        @user.save
-        helpers.send_welcome_email @user
-        session[:user_id] = @user.id
-        redirect_to '/welcome'
-    end
+	def create
+		begin
+			@user = User.new(user_params)
+		rescue ActionController::ParameterMissing => e
+			respond_to do |format|
+				format.html { render :'common/error' }
+				format.json { render json: { message: 'Missing required parameters', error: e }, status: :bad_request }
+			end && return
+		end
+
+		unless validate_password(params[:password])
+			respond_to do |format|
+				format.html { render :'common/error' }
+				format.json { render json: { message: 'Password does not meet security requirements' }, status: :bad_request }
+			end && return
+		end
+
+		if @user.save
+			helpers.send_welcome_email @user
+			session[:user_id] = @user.id
+			redirect_to '/welcome'
+		else
+			render :'common/error'
+		end
+	end
 
     def verify
         @user = User.find(params[:user_id])
@@ -91,8 +109,14 @@ class UsersController < ApplicationController
 
 	private
 
-    def user_params
-        params.require(:user).permit(:first_name, :last_name, :email, :password, :password_confirmation)
-    end
+	def user_params
+		params.require(:user).permit(:first_name, :last_name, :email, :password, :password_confirmation).tap do |user_params|
+			user_params.require(%i[first_name last_name email password password_confirmation])
+		end
+	end
+
+	def validate_password(password)
+		password.length.between?(8, 100) && /[A-Z]/.match(password) && /[!@#$%^&*]/.match(password)
+	end
 
 end

@@ -25,21 +25,21 @@ class EventsController < ApplicationController
     end
   end
 
-    def show
-        @event = Event.find(params[:id])
-        @can_edit_event = helpers.can_edit_event(@event)
-        @event_details = EventDetail.includes(:event_type).where(event_id: params[:id]).order(Arel.sql('event_types.display_order ASC'))
-        @new_event_detail = EventDetail.new
-        @participants = Participant.includes([{ event_detail: [:event_type] }, :user]).where(event_detail: { event_id: params[:id] }).order(Arel.sql('event_types.display_order'), Arel.sql('participants.participation_day'), Arel.sql('users.last_name'))
-        if logged_in?
-            @user_list = User.where(id: current_user.id)
-            @event_types = EventType.where(brand_id: @event.brand_id).order(display_order: :asc)
-        end
-        @new_participant = Participant.new
-        @new_participant.event_detail = EventDetail.new
-        @active_tab = 'details'
-        @active_tab = params['tab'] unless params['tab'].nil?
-    end
+	def show
+		@event = Event.find(params[:id])
+		@can_edit_event = can_edit_event(@event)
+		@event_details = EventDetail.includes(:event_type).where(event_id: params[:id]).order(Arel.sql('event_types.display_order ASC'))
+		@new_event_detail = EventDetail.new
+		@participants = Participant.includes([{ event_detail: [:event_type] }, :user]).where(event_detail: { event_id: params[:id] }).order(Arel.sql('event_types.display_order'), Arel.sql('participants.participation_day'), Arel.sql('users.last_name'))
+		if logged_in?
+			@user_list = User.where(id: current_user.id)
+			@event_types = EventType.where(brand_id: @event.brand_id).order(display_order: :asc)
+		end
+		@new_participant = Participant.new
+		@new_participant.event_detail = EventDetail.new
+		@active_tab = 'details'
+		@active_tab = params['tab'] unless params['tab'].nil?
+	end
 
   def edit
     @event = Event.find(params[:id])
